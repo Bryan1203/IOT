@@ -49,8 +49,7 @@ def visualize(
     category_name = category.category_name
     probability = round(category.score, 2)
     result_text = category_name + ' (' + str(probability) + ')'
-    if (result_text == "stop sign"):
-        print("Stop Sign detected!")
+    
     text_location = (_MARGIN + bbox.origin_x,
                      _MARGIN + _ROW_SIZE + bbox.origin_y)
     cv2.putText(image, result_text, text_location, cv2.FONT_HERSHEY_PLAIN,
