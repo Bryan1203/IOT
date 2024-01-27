@@ -52,7 +52,7 @@ def Keyborad_control():
         fc.stop()
     if key=='q':
         print("quit")  
-        break  
+        #break  
 if __name__ == '__main__':
     Keyborad_control()
 
