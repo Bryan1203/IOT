@@ -82,7 +82,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     # Run object detection estimation using the model.
     detection_result = detector.detect(input_tensor)
     
-    if detection_result.label == "stop sign":
+    if  "stop sign" in detection_result[1]:
         # Perform the task for these items
       print("detected Stop Sign!")
 
