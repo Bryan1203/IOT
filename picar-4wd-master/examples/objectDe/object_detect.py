@@ -61,7 +61,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
   options = vision.ObjectDetectorOptions(
       base_options=base_options, detection_options=detection_options)
   detector = vision.ObjectDetector.create_from_options(options)
-
+  
+  detectStartTime = 0
   # Continuously capture images from the camera and run inference
   while cap.isOpened():
     success, image = cap.read()
@@ -82,10 +83,18 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     # Run object detection estimation using the model.
     detection_result = detector.detect(input_tensor)
     
-    if  "stop sign" in detection_result[1]:
+    #if  "stop sign" in detection_result[1]:
         # Perform the task for these items
-      print("detected Stop Sign!")
+      #print("detected Stop Sign!")
+    #print(detection_result)
+    #print(detection_result)
+    
+    for detection in detection_result.detections:
+      for category in detection.categories:
 
+        if (category.category_name=="stop sign" and time.time()>(detectStartTime+10)):
+          print("stop sign detected!")
+          detectStartTime = time.time()
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detection_result)
 
