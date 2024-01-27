@@ -81,11 +81,10 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
     # Run object detection estimation using the model.
     detection_result = detector.detect(input_tensor)
-    for detection in detection_result:
-      label = detection.label
-    if label in ["stop sign"]:
+    
+    if detection_result == "stop sign":
         # Perform the task for these items
-        print(label)
+      print("detected Stop Sign!")
 
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detection_result)
