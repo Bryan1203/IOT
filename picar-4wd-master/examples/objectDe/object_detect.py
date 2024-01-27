@@ -22,7 +22,7 @@ from tflite_support.task import processor
 from tflite_support.task import vision
 import utils
 
-import keyboard_control
+
 
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
@@ -73,8 +73,6 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           'ERROR: Unable to read from webcam. Please verify your webcam settings.'
       )
 
-    keyboard_control.Keyborad_control()
-
     counter += 1
     image = cv2.flip(image, 1)
 
@@ -87,11 +85,6 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     # Run object detection estimation using the model.
     detection_result = detector.detect(input_tensor)
     
-    #if  "stop sign" in detection_result[1]:
-        # Perform the task for these items
-      #print("detected Stop Sign!")
-    #print(detection_result)
-    #print(detection_result)
     
     for detection in detection_result.detections:
       for category in detection.categories:
@@ -165,3 +158,4 @@ def main():
 
 if __name__ == '__main__':
   main()
+
