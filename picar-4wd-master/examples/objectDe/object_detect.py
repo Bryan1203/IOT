@@ -22,6 +22,8 @@ from tflite_support.task import processor
 from tflite_support.task import vision
 import utils
 
+import keyboard_control
+
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         enable_edgetpu: bool) -> None:
@@ -70,6 +72,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
       sys.exit(
           'ERROR: Unable to read from webcam. Please verify your webcam settings.'
       )
+
+    keyboard_control.Keyborad_control()
 
     counter += 1
     image = cv2.flip(image, 1)
