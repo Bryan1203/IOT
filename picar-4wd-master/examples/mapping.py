@@ -145,7 +145,7 @@ def main():
             obs_x = min(max(0,int(dist*np.cos(angle_radians))+curr_x),49)
 
             print("Distance at (",obs_x," ,",obs_y,")",i + 90,"is ",fc.get_distance_at(i))
-            if dist != -1:  
+            if dist != -1 and dist != -2:  
                 point_map[obs_x, obs_y] = 1
             time.sleep(0.09)
                 #print(point_map)
