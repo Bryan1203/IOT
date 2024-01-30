@@ -127,16 +127,7 @@ def main():
 
 
     while (curr_x, curr_y) != (goal_x, goal_y):
-        path = bfs(point_map, (curr_x, curr_y), (goal_x, goal_y))
-        if not path:
-            print("No path found")
-            break
-        
-        for next_x, next_y in path[1:]:
-            # Code to move the car to (next_x, next_y)
-            move_car(curr_x, curr_y, next_x, next_y)
-            curr_x, curr_y = next_x, next_y
-            time.sleep(0.1)
+       
 
         for i in range(-90, 90, 5):
             
@@ -162,6 +153,18 @@ def main():
                 #if counter > 5:
                 #interpolate(point_map, curr_x, curr_y, obs_x, obs_y)
             np.savetxt('my_array.txt', np.rot90(point_map), fmt='%d', delimiter=', ')
+
+        path = bfs(point_map, (curr_x, curr_y), (goal_x, goal_y))
+        
+        if not path:
+            print("No path found")
+            break
+        
+        for next_x, next_y in path[1:]:
+            # Code to move the car to (next_x, next_y)
+            move_car(curr_x, curr_y, next_x, next_y)
+            curr_x, curr_y = next_x, next_y
+            time.sleep(0.1)
 if __name__ == "__main__":
     try: 
         main()
