@@ -6,6 +6,7 @@ from queue import Queue
 
 speed = 30
 map_size = 50
+orientation = 0
 def goRight(): 
 	speed4 = fc.Speed(4)
 	speed25 = fc.Speed(25)
@@ -18,7 +19,7 @@ def goRight():
 		fc.turn_right(1)
 		x += (speed4()+speed25()) * 0.1
 		time.sleep(0.1)
-		
+	orientation += 90
 	print("%smm"%x)
 	speed4.deinit()
 	speed25.deinit()
@@ -69,7 +70,7 @@ def goLeft():
 		fc.turn_left(1)
 		x += (speed4()+speed25()) * 0.1
 		time.sleep(0.1)
-		
+	orientation -= 90
 	print("%smm"%x)
 	speed4.deinit()
 	speed25.deinit()
@@ -124,6 +125,7 @@ def main():
     curr_x, curr_y = 25, 0
     goal_x, goal_y = 25, 49 
     point_map = np.zeros((map_size, map_size))
+    orientation = 0
 
 
     while (curr_x, curr_y) != (goal_x, goal_y):
@@ -132,7 +134,7 @@ def main():
         for i in range(-90, 90, 5):
             
             # Convert degrees to radians
-            angle_radians = np.radians(i + 90)
+            angle_radians = np.radians(i + 90 + orientation) 
             
             # Calculate sine and cosine
             obs_y = 0
@@ -141,8 +143,8 @@ def main():
             print("Distance at ",i + 90,"is ",dist)
             # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
             # add offset for each search direction (right,left,top,bottom)
-            obs_y = min(max(0,int(dist*np.sin(angle_radians))+curr_y),49)
-            obs_x = min(max(0,int(dist*np.cos(angle_radians))+curr_x),49)
+            obs_y = min(max(0,int(dist*np.sin(angle_radians))),49)
+            obs_x = min(max(0,int(dist*np.cos(angle_radians))),49)
 
             print("Distance at (",obs_x," ,",obs_y,")",i + 90,"is ",fc.get_distance_at(i))
             if dist != -1 and dist != -2:  
