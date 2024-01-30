@@ -167,6 +167,9 @@ def main():
             # Code to move the car to (next_x, next_y)
             move_car(curr_x, curr_y, next_x, next_y)
             curr_x, curr_y = next_x, next_y
+            print("Curr: (", curr_x,",",curr_y,")")
+            print("Path1: (", next_x,",",next_y,")")
+            print("Full Path: (", path,")")
             time.sleep(0.1)
 if __name__ == "__main__":
     try: 
