@@ -123,7 +123,7 @@ def bfs(point_map, start, goal):
 
 def main():
     curr_x, curr_y = 25, 0
-    goal_x, goal_y = 25, 49 
+    goal_x, goal_y = 25, 8 
     point_map = np.zeros((map_size, map_size))
     orientation = 0
 
