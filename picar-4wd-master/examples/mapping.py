@@ -161,8 +161,9 @@ def main():
         if not path:
             print("No path found")
             break
+        else:
         
-        for next_x, next_y in path[1]:
+            next_x, next_y = path[1]
             # Code to move the car to (next_x, next_y)
             move_car(curr_x, curr_y, next_x, next_y)
             curr_x, curr_y = next_x, next_y
