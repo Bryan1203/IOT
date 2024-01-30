@@ -1,9 +1,25 @@
-import numpy as np
 import time
 import picar_4wd as fc
+import numpy as np
 import math
+from queue import Queue
 
 speed = 30
+map_size = 50
+
+def move_car(curr_x, curr_y, next_x, next_y):
+    if next_x == curr_x + 1:  # Move right
+        fc.turn_right(speed)
+    elif next_x == curr_x - 1:  # Move left
+        fc.turn_left(speed)
+    elif next_y == curr_y + 1:  # Move forward
+        fc.forward(speed)
+    elif next_y == curr_y - 1:  # Move backward
+        fc.backward(speed)
+    time.sleep(1)  # Adjust as needed for the movement duration
+    fc.stop()
+
+
 def interpolate(point_map, curr_x, curr_y, obs_x, obs_y):
     # Interpolate between (curr_x, curr_y) and (obs_x, obs_y)
     for x in range(min(5,abs(obs_x - curr_x))):
@@ -18,91 +34,69 @@ def interpolate(point_map, curr_x, curr_y, obs_x, obs_y):
         point_map[min(x_val, 49), min(y_val, 49)] = 1
 
 
-def polar_to_cartesian(angle, distance):
-    angle_rad = np.radians(angle)
-    x = distance * np.cos(angle_rad)
-    y = distance * np.sin(angle_rad)
-    return int(x), int(y)
+def bfs(point_map, start, goal):
+    q = Queue()
+    q.put([start])
+    visited = set()
 
-def create_map(ultrasonic_sensor, map_size=(100, 100), car_position=(50, 0)):
-    map_array = np.zeros(map_size)
+    while not q.empty():
+        path = q.get()
+        x, y = path[-1]
 
-    for angle in range(-ultrasonic_sensor.max_angle, ultrasonic_sensor.max_angle, ultrasonic_sensor.STEP):
-        ultrasonic_sensor.servo.set_angle(angle)  
-        time.sleep(0.04) 
-        distance = ultrasonic_sensor.get_distance() 
-
-        if distance > 0:  
-            x, y = polar_to_cartesian(angle, distance) 
-            map_x = car_position[0] + x  
-            map_y = car_position[1] + y
-
-            if 0 <= map_x < map_size[0] and 0 <= map_y < map_size[1]:
-                map_array[map_y, map_x] = 1  
-
-    return map_array
-
-def calculate_delay(distance, speed):
-    if speed <= 0:
-        return 0 
-    time_delay = distance / speed
-    return time_delay
-
-def follow_path(path, motor):
-    for i in range(len(path) - 1):
-        current_point = path[i]
-        next_point = path[i + 1]
-
-        turn_angle, distance = calculate_turn_and_distance(current_point, next_point)
-
-        if turn_angle > 0:
-            fc.turn_right(turn_angle) 
-        elif turn_angle < 0:
-            fc.turn_left(-turn_angle)  
+        if(x, y) == goal:
+            return path
         
-        fc.forward(distance)  
-
-        time.sleep(calculate_delay(distance, 10))
+        for dx, dy in [(1, 0), (0, 1), (-1, 0), (0, -1)]:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < map_size and 0 <= ny < map_size and point_map[nx, ny] == 0 and (nx, ny) not in visited:
+                q.put(path + [(nx, ny)])
+                visited.add((nx, ny))
+    return None
 
 def main():
-    curr_x = 25
-    curr_y = 0
-    start = (curr_x, curr_y)
-    goal = (75, 75)
+    curr_x, curr_y = 25, 0
+    goal_x, goal_y = 25, 49 
+    point_map = np.zeros((map_size, map_size))
 
-    point_map = np.zeros((50, 50))   
-    
-    while True:
-        for angle in range(-90, 90, 5):
-            # Rest of your loop with modifications
-            # Convert degrees to radians
-            angle_radians = np.radians(i + 90)
-            dist = fc.get_distance_at(angle)
 
-            if dist != -1:
-                obs_x, obs_y = polar_to_cartesian(angle, dist)
-                curr_x = curr_x + obs_x
-                curr_y = curr_y + obs_y
-                if 0 <= map_x < 100 and 0 <= map_y < 100:
-                    point_map[map_y, map_x] = 1  # Update the map
-            
-            path = navigate(point_map, start, goal)
-            if path:
-                follow_path(path, motor)  # Move the robot along the path
-            else:
-                print("No path found")
-                break  # Break the loop if no path is found
-
-            # Check if the goal is reached
-            if (curr_x, curr_y) == goal:
-                print("Goal reached")
-                break
-            
-            np.savetxt('my_array.txt', np.rot90(point_map), fmt='%d', delimiter=', ')
-            
+    while (curr_x, curr_y) != (goal_x, goal_y):
+        path = bfs(point_map, (curr_x, curr_y), (goal_x, goal_y))
+        if not path:
+            print("No path found")
+            break
+        
+        for next_x, next_y in path[1:]:
+            # Code to move the car to (next_x, next_y)
+            move_car(curr_x, curr_y, next_x, next_y)
+            curr_x, curr_y = next_x, next_y
             time.sleep(0.1)
 
-      
+        for i in range(-90, 90, 5):
+            
+            # Convert degrees to radians
+            angle_radians = np.radians(i + 90)
+            
+            # Calculate sine and cosine
+            obs_y = 0
+            obs_x = 0
+            dist = fc.get_distance_at(i)
+            print("Distance at ",i + 90,"is ",dist)
+            # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
+            # add offset for each search direction (right,left,top,bottom)
+            obs_y = min(max(0,int(dist*np.sin(angle_radians))+curr_y),49)
+            obs_x = min(max(0,int(dist*np.cos(angle_radians))+curr_x),49)
 
-if __name__ == '__main__':
-    main()
+            print("Distance at (",obs_x," ,",obs_y,")",i + 90,"is ",fc.get_distance_at(i))
+            if dist != -1:  
+                point_map[obs_x, obs_y] = 1
+            time.sleep(0.09)
+                #print(point_map)
+                # interpolation
+                #if counter > 5:
+                #interpolate(point_map, curr_x, curr_y, obs_x, obs_y)
+            np.savetxt('my_array.txt', np.rot90(point_map), fmt='%d', delimiter=', ')
+if __name__ == "__main__":
+    try: 
+        main()
+    finally: 
+        fc.stop()
