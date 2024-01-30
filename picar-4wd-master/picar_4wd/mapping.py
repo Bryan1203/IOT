@@ -1,8 +1,5 @@
 import numpy as np
 import time
-from picar_4wd.ultrasonic import Ultrasonic
-from picar_4wd.pin import Pin
-from picar_4wd.navigation import navigate
 import picar_4wd as fc
 import math
 
