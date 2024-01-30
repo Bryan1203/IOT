@@ -65,7 +65,6 @@ def follow_path(path, motor):
         time.sleep(calculate_delay(distance, 10))
 
 def main():
-    ultrasonic_sensor = Ultrasonic(Pin('D8'), Pin('D9'))  # Initialize your sensor here
     curr_x = 25
     curr_y = 0
     start = (curr_x, curr_y)
