@@ -6,16 +6,83 @@ from queue import Queue
 
 speed = 30
 map_size = 50
+def goRight(): 
+	speed4 = fc.Speed(4)
+	speed25 = fc.Speed(25)
+	speed4.start()
+	speed25.start()
+	x = 0
+	distance = 30
 
+	while x <= distance:
+		fc.turn_right(1)
+		x += (speed4()+speed25()) * 0.1
+		time.sleep(0.1)
+		
+	print("%smm"%x)
+	speed4.deinit()
+	speed25.deinit()
+	fc.stop()
+def goForward(): 
+	speed4 = fc.Speed(4)
+	speed25 = fc.Speed(25)
+	speed4.start()
+	speed25.start()
+	x = 0
+	distance = 1
+
+	while x <= distance:
+		fc.foward(1)
+		x += (speed4()+speed25()) * 0.1
+		time.sleep(0.1)
+		
+	print("%smm"%x)
+	speed4.deinit()
+	speed25.deinit()
+	fc.stop()
+def goBackward(): 
+	speed4 = fc.Speed(4)
+	speed25 = fc.Speed(25)
+	speed4.start()
+	speed25.start()
+	x = 0
+	distance = 1
+
+	while x <= distance:
+		fc.backward(1)
+		x += (speed4()+speed25()) * 0.1
+		time.sleep(0.1)
+		
+	print("%smm"%x)
+	speed4.deinit()
+	speed25.deinit()
+	fc.stop()
+def goLeft(): 
+	speed4 = fc.Speed(4)
+	speed25 = fc.Speed(25)
+	speed4.start()
+	speed25.start()
+	x = 0
+	distance = 30
+
+	while x <= distance:
+		fc.turn_left(1)
+		x += (speed4()+speed25()) * 0.1
+		time.sleep(0.1)
+		
+	print("%smm"%x)
+	speed4.deinit()
+	speed25.deinit()
+	fc.stop()
 def move_car(curr_x, curr_y, next_x, next_y):
     if next_x == curr_x + 1:  # Move right
-        fc.goRight()
+        goRight()
     elif next_x == curr_x - 1:  # Move left
-        fc.goLeft()
+        goLeft()
     elif next_y == curr_y + 1:  # Move forward
-        fc.goForward()
+        goForward()
     elif next_y == curr_y - 1:  # Move backward
-        fc.goBackward()
+        goBackward()
     time.sleep(1)  # Adjust as needed for the movement duration
     fc.stop()
 
