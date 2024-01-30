@@ -1,11 +1,6 @@
 from picar_4wd.path_planning import bfs_path_planning
 from picar_4wd.motor import Motor
-# Other imports as needed
 
-def follow_path(path, motor):
-    # Convert path to motor commands here
-    
-    pass
 
 def navigate(obstacle_map, start, goal):
     path = bfs_path_planning(obstacle_map, start, goal)

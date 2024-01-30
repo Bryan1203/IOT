@@ -85,8 +85,8 @@ def main():
 
             if dist != -1:
                 obs_x, obs_y = polar_to_cartesian(angle, dist)
-                map_x = curr_x + obs_x
-                map_y = curr_y + obs_y
+                curr_x = curr_x + obs_x
+                curr_y = curr_y + obs_y
                 if 0 <= map_x < 100 and 0 <= map_y < 100:
                     point_map[map_y, map_x] = 1  # Update the map
             
