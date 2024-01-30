@@ -32,7 +32,7 @@ def goForward():
 	distance = 1
 
 	while x <= distance:
-		fc.foward(1)
+		fc.forward(1)
 		x += (speed4()+speed25()) * 0.1
 		time.sleep(0.1)
 		
@@ -145,7 +145,7 @@ def main():
             obs_x = min(max(0,int(dist*np.cos(angle_radians))+curr_x),49)
 
             print("Distance at (",obs_x," ,",obs_y,")",i + 90,"is ",fc.get_distance_at(i))
-            if dist != -1:  
+            if dist != -1 and dist != -2:  
                 point_map[obs_x, obs_y] = 1
             time.sleep(0.09)
                 #print(point_map)
@@ -160,7 +160,7 @@ def main():
             print("No path found")
             break
         
-        for next_x, next_y in path[1:]:
+        for next_x, next_y in path[1]:
             # Code to move the car to (next_x, next_y)
             move_car(curr_x, curr_y, next_x, next_y)
             curr_x, curr_y = next_x, next_y
