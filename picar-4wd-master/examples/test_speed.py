@@ -14,10 +14,10 @@ def test_speed():
 		#speed = speed4()
 		#x += speed * 0.1
 		#print("%smm/s"%speed)
-	distance = 25
+	distance = 1
 
-	while x <= distance:
-		fc.turn_right(1)
+	while x < distance:
+		fc.forward(0.5)
 		x += (speed4()+speed25()) * 0.1
 		time.sleep(0.1)
 		

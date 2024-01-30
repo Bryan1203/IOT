@@ -83,6 +83,74 @@ def test3():
     print("%smm"%x)
     speed4.deinit()
     fc.stop()
+def goRight(): 
+	speed4 = fc.Speed(4)
+	speed25 = fc.Speed(25)
+	speed4.start()
+	speed25.start()
+	x = 0
+	distance = 30
+
+	while x <= distance:
+		fc.turn_right(1)
+		x += (speed4()+speed25()) * 0.1
+		time.sleep(0.1)
+		
+	print("%smm"%x)
+	speed4.deinit()
+	speed25.deinit()
+	fc.stop()
+def goForward(): 
+	speed4 = fc.Speed(4)
+	speed25 = fc.Speed(25)
+	speed4.start()
+	speed25.start()
+	x = 0
+	distance = 1
+
+	while x <= distance:
+		fc.foward(1)
+		x += (speed4()+speed25()) * 0.1
+		time.sleep(0.1)
+		
+	print("%smm"%x)
+	speed4.deinit()
+	speed25.deinit()
+	fc.stop()
+def goBackward(): 
+	speed4 = fc.Speed(4)
+	speed25 = fc.Speed(25)
+	speed4.start()
+	speed25.start()
+	x = 0
+	distance = 1
+
+	while x <= distance:
+		fc.backward(1)
+		x += (speed4()+speed25()) * 0.1
+		time.sleep(0.1)
+		
+	print("%smm"%x)
+	speed4.deinit()
+	speed25.deinit()
+	fc.stop()
+def goLeft(): 
+	speed4 = fc.Speed(4)
+	speed25 = fc.Speed(25)
+	speed4.start()
+	speed25.start()
+	x = 0
+	distance = 30
+
+	while x <= distance:
+		fc.turn_left(1)
+		x += (speed4()+speed25()) * 0.1
+		time.sleep(0.1)
+		
+	print("%smm"%x)
+	speed4.deinit()
+	speed25.deinit()
+	fc.stop()
 if __name__ == "__main__":
     test3()
         
