@@ -9,13 +9,13 @@ map_size = 50
 
 def move_car(curr_x, curr_y, next_x, next_y):
     if next_x == curr_x + 1:  # Move right
-        fc.turn_right(speed)
+        fc.goRight()
     elif next_x == curr_x - 1:  # Move left
-        fc.turn_left(speed)
+        fc.goLeft()
     elif next_y == curr_y + 1:  # Move forward
-        fc.forward(speed)
+        fc.goForward()
     elif next_y == curr_y - 1:  # Move backward
-        fc.backward(speed)
+        fc.goBackward()
     time.sleep(1)  # Adjust as needed for the movement duration
     fc.stop()
 
