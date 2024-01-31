@@ -11,7 +11,7 @@ orientation = 0
 def goRight(): 
     global orientation
     fc.turn_right(1)
-    time.sleep(1.15)
+    time.sleep(1.25)
     fc.stop()
     #update the orientation
     if orientation== 0:
@@ -25,12 +25,12 @@ def goRight():
 
 def goForward(): 
     fc.forward(1)
-    time.sleep(0.8)
+    time.sleep(0.5)
     fc.stop()
 
 def goBackward(): 
     fc.backward(1)
-    time.sleep(0.1)
+    time.sleep(0.3)
     fc.stop()
 
 def goLeft(): 
@@ -141,7 +141,7 @@ def bfs(point_map, start, goal):
 
 def main():
     curr_x, curr_y = 25, 0
-    goal_x, goal_y = 25, 8 
+    goal_x, goal_y = 25, 10 
     point_map = np.zeros((map_size, map_size))
     obs_y = 0
     obs_x = 0
@@ -157,7 +157,7 @@ def main():
             
             # Calculate sine and cosine
             
-            dist = fc.get_distance_at(i)/1.5
+            dist = fc.get_distance_at(i)/1.2
             print("Distance at ",i + 90,"degree is ",dist)
             # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
             # add offset for each search direction (right,left,top,bottom)
