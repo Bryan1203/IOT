@@ -79,7 +79,7 @@ def goLeft():
     speed25.deinit()
     fc.stop()
 
-def move_car(curr_x, curr_y, next_x, next_y,orientation):
+def move_car(curr_x, curr_y, next_x, next_y):
     if next_x == curr_x + 1:  # Move right
         if orientation == 0:
             goRight()
