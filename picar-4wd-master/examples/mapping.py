@@ -137,15 +137,15 @@ def main():
             # Calculate sine and cosine
             obs_y = 0
             obs_x = 0
-            dist = fc.get_distance_at(i)
+            dist = fc.get_distance_at(i)/7
             print("Distance at ",i + 90,"degree is ",dist)
             # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
             # add offset for each search direction (right,left,top,bottom)
             #obs_y = min(max(0,int(dist*np.sin(angle_radians))),49)
             #obs_x = min(max(0,int(dist*np.cos(angle_radians))),49)
 
-            obs_x = int(((dist*np.cos(angle_radians))/7 + curr_x))
-            obs_y = int(((dist*np.cos(angle_radians))/7 + curr_y))
+            obs_x = int(((dist*np.cos(angle_radians)) + curr_x))
+            obs_y = int(((dist*np.cos(angle_radians)) + curr_y))
 
             print("Obstacle at (",obs_x," ,",obs_y,")","is ",dist, "cm away from the car")
             if dist != -1 and dist != -2 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0:  
