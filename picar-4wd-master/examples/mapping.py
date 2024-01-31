@@ -22,7 +22,7 @@ def goRight():
     #     x += (speed4()+speed25()) * 0.1
     #     time.sleep(0.1)
     fc.turn_right(1)
-    time.sleep(1)
+    time.sleep(1.15)
     fc.stop()
     #update the orientation
     if orientation== 0:
@@ -56,7 +56,7 @@ def goForward():
 	# speed25.deinit()
 	# fc.stop()
     fc.forward(1)
-    time.sleep(0.1)
+    time.sleep(0.8)
     fc.stop()
 def goBackward(): 
 	# speed4 = fc.Speed(4)
@@ -93,7 +93,7 @@ def goLeft():
     #     x += (speed4()+speed25()) * 0.1
     #     time.sleep(0.1)
     fc.turn_left(1)
-    time.sleep(1)
+    time.sleep(1.25)
     fc.stop()
     if orientation== 0:
         orientation = 90
