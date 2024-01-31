@@ -7,6 +7,7 @@ from queue import Queue
 speed = 30
 map_size = 50
 orientation = 0
+
 def goRight(): 
     global orientation
     speed4 = fc.Speed(4)
@@ -20,8 +21,15 @@ def goRight():
         fc.turn_right(1)
         x += (speed4()+speed25()) * 0.1
         time.sleep(0.1)
-    if orientation!=-90:
+    #update the orientation
+    if orientation== 0:
         orientation = -90
+    elif orientation == -90:
+        orientation = 180
+    elif orientation == 180:
+        orientation = 90
+    elif orientation == 90:
+        orientation = 0
     print("%smm"%x)
     speed4.deinit()
     speed25.deinit()
@@ -74,8 +82,14 @@ def goLeft():
         fc.turn_left(1)
         x += (speed4()+speed25()) * 0.1
         time.sleep(0.1)
-    if orientation != 90:
+    if orientation== 0:
         orientation = 90
+    elif orientation == -90:
+        orientation = -0
+    elif orientation == -180:
+        orientation = -90
+    elif orientation == 90:
+        orientation = 180
     print("%smm"%x)
     speed4.deinit()
     speed25.deinit()
@@ -88,16 +102,21 @@ def move_car(curr_x, curr_y, next_x, next_y):
             goRight()
         elif orientation == -90: 
             goForward()
-        elif orientation == 180 or orientation == -180:
+        elif orientation == 180:
             goLeft()
             goForward()
+        elif orientation == 90:
+            goRight()
+            goRight()
+            goForward()
         print("going Right")
+
     elif next_x == curr_x - 1:  # Move left
         if orientation == 0:
             goLeft()
         elif orientation == 90:
             goForward()
-        elif orientation == 180 or orientation ==-180:
+        elif orientation == 180:
             goRight()
             goForward()
         print("going Left")
@@ -107,26 +126,21 @@ def move_car(curr_x, curr_y, next_x, next_y):
         elif orientation == -90:
             goLeft()
             goForward()
-            orientation = 0
         elif orientation == 90:
             goRight()
             goForward()
-            orientation = 0
-        elif orientation == 180 or orientation == -180:
+        elif orientation == 180:
            goBackward()
         print("going forward")
     elif next_y == curr_y - 1:  # Move backward
-        if orientation == -180 or orientation == 180:
-            goBackward()
-            orientation = 0
+        if orientation == 180:
+            goForward()
         elif orientation == -90:
             goRight()
             goForward()
-            orientation = -180
         elif orientation == 90:
             goLeft()
             goForward()
-            orientation = -180
         elif orientation == 0:
             goBackward()
             
