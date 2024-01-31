@@ -8,6 +8,7 @@ speed = 30
 map_size = 50
 orientation = 0
 def goRight(): 
+    global orientation
 	speed4 = fc.Speed(4)
 	speed25 = fc.Speed(25)
 	speed4.start()
@@ -19,7 +20,7 @@ def goRight():
 		fc.turn_right(1)
 		x += (speed4()+speed25()) * 0.1
 		time.sleep(0.1)
-	orientation += 90
+	orientation -= 90
 	print("%smm"%x)
 	speed4.deinit()
 	speed25.deinit()
@@ -59,6 +60,7 @@ def goBackward():
 	speed25.deinit()
 	fc.stop()
 def goLeft(): 
+    global orientation
 	speed4 = fc.Speed(4)
 	speed25 = fc.Speed(25)
 	speed4.start()
@@ -70,7 +72,7 @@ def goLeft():
 		fc.turn_left(1)
 		x += (speed4()+speed25()) * 0.1
 		time.sleep(0.1)
-	orientation -= 90
+	orientation += 90
 	print("%smm"%x)
 	speed4.deinit()
 	speed25.deinit()
@@ -127,6 +129,7 @@ def main():
     point_map = np.zeros((map_size, map_size))
     obs_y = 0
     obs_x = 0
+    global orientation
 
     while (curr_x, curr_y) != (goal_x, goal_y):
        
@@ -138,7 +141,7 @@ def main():
             
             # Calculate sine and cosine
             
-            dist = fc.get_distance_at(i)
+            dist = fc.get_distance_at(i)/1.5
             print("Distance at ",i + 90,"degree is ",dist)
             # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
             # add offset for each search direction (right,left,top,bottom)
