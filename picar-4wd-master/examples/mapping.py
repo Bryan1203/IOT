@@ -54,26 +54,32 @@ def move_car(curr_x, curr_y, next_x, next_y):
     if next_x == curr_x + 1:  # Move right
         if orientation == 0:
             goRight()
+            time.sleep(0.1)
             goForward()
         elif orientation == -90: 
             goForward()
         elif orientation == 180:
             goLeft()
+            time.sleep(0.1)
             goForward()
         elif orientation == 90:
             goRight()
+            time.sleep(0.1)
             goRight()
+            time.sleep(0.1)
             goForward()
         print("going Right")
 
     elif next_x == curr_x - 1:  # Move left
         if orientation == 0:
             goLeft()
+            time.sleep(0.1)
             goForward()
         elif orientation == 90:
             goForward()
         elif orientation == 180:
             goRight()
+            time.sleep(0.1)
             goForward()
         print("going Left")
     elif next_y == curr_y + 1:  # Move forward
@@ -84,6 +90,7 @@ def move_car(curr_x, curr_y, next_x, next_y):
             goForward()
         elif orientation == 90:
             goRight()
+            time.sleep(0.1)
             goForward()
         elif orientation == 180:
            goBackward()
@@ -93,9 +100,11 @@ def move_car(curr_x, curr_y, next_x, next_y):
             goForward()
         elif orientation == -90:
             goRight()
+            time.sleep(0.1)
             goForward()
         elif orientation == 90:
             goLeft()
+            time.sleep(0.1)
             goForward()
         elif orientation == 0:
             goBackward()
