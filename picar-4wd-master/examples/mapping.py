@@ -125,8 +125,6 @@ def main():
     curr_x, curr_y = 25, 0
     goal_x, goal_y = 25, 8 
     point_map = np.zeros((map_size, map_size))
-    orientation = 0
-
 
     while (curr_x, curr_y) != (goal_x, goal_y):
        
@@ -143,11 +141,14 @@ def main():
             print("Distance at ",i + 90,"is ",dist)
             # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
             # add offset for each search direction (right,left,top,bottom)
-            obs_y = min(max(0,int(dist*np.sin(angle_radians))),49)
-            obs_x = min(max(0,int(dist*np.cos(angle_radians))),49)
+            #obs_y = min(max(0,int(dist*np.sin(angle_radians))),49)
+            #obs_x = min(max(0,int(dist*np.cos(angle_radians))),49)
+
+            obs_x = int((dist*np.cos(angle_radians) + curr_x)/7)
+            obs_y = int((dist*np.cos(angle_radians) + curr_y)/7)
 
             print("Distance at (",obs_x," ,",obs_y,")",i + 90,"is ",fc.get_distance_at(i))
-            if dist != -1 and dist != -2:  
+            if dist != -1 and dist != -2 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0:  
                 point_map[obs_x, obs_y] = 1
             time.sleep(0.09)
                 #print(point_map)
