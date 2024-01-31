@@ -79,18 +79,55 @@ def goLeft():
     speed25.deinit()
     fc.stop()
 
-def move_car(curr_x, curr_y, next_x, next_y):
+def move_car(curr_x, curr_y, next_x, next_y,orientation):
     if next_x == curr_x + 1:  # Move right
-        goRight()
+        if orientation == 0:
+            goRight()
+        elif orientation == -90: 
+            goForward()
+        elif orientation == 180 or orientation == -180:
+            goLeft()
+            goForward()
         print("going Right")
     elif next_x == curr_x - 1:  # Move left
-        goLeft()
+        if orientation == 0:
+            goLeft()
+        elif orientation == 90:
+            goForward()
+        elif orientation == 180 or orientation ==-180:
+            goRight()
+            goForward()
         print("going Left")
     elif next_y == curr_y + 1:  # Move forward
-        goForward()
+        if orientation == 0:
+            goForward()
+        elif orientation == -90:
+            goLeft()
+            goForward()
+            orientation = 0
+        elif orientation == 90:
+            goRight()
+            goForward()
+            orientation = 0
+        elif orientation == 180 or orientation == -180:
+           goBackward()
         print("going forward")
     elif next_y == curr_y - 1:  # Move backward
-        goBackward()
+        if orientation == -180 or orientation == 180:
+            goBackward()
+            orientation = 0
+        elif orientation == -90:
+            goRight()
+            goForward()
+            orientation = -180
+        elif orientation == 90:
+            goLeft()
+            goForward()
+            orientation = -180
+        elif orientation == 0:
+            goBackward()
+            
+            
         print("going backward")
 
     time.sleep(0.1)  # Adjust as needed for the movement duration
