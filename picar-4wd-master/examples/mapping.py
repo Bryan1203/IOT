@@ -3,6 +3,7 @@ import picar_4wd as fc
 import numpy as np
 import math
 from queue import Queue
+from queue import PriorityQueue
 
 speed = 30
 map_size = 50
@@ -120,6 +121,35 @@ def interpolate(point_map, curr_x, curr_y, obs_x, obs_y):
         point_map[min(x_val, 49), min(y_val, 49)] = 1
 
 
+def heuristic(a, b):
+    (x1, y1) = a
+    (x2, y2) = b
+    return abs(x1 - x2) + abs(y1 - y2)
+
+def a_star(point_map, start, goal):
+    pq = PriorityQueue()
+    pq.put((0, [start]))
+    visited = set()
+    g_cost = {start: 0}
+
+    while not pq.empty():
+        current_cost, path = pq.get()
+        current_node = path[-1]
+
+        if current_node == goal:
+            return path
+
+        for dx, dy in [(1, 0), (0, 1), (-1, 0), (0, -1)]:
+            nx, ny = current_node[0] + dx, current_node[1] + dy
+            new_cost = g_cost[current_node] + 1
+            if 0 <= nx < len(point_map) and 0 <= ny < len(point_map[0]) and point_map[nx][ny] == 0 and (nx, ny) not in visited:
+                visited.add((nx, ny))
+                g_cost[(nx, ny)] = new_cost
+                f_cost = new_cost + heuristic((nx, ny), goal)
+                pq.put((f_cost, path + [(nx, ny)]))
+
+    return None
+
 def bfs(point_map, start, goal):
     q = Queue()
     q.put([start])
@@ -177,7 +207,8 @@ def main():
                 #interpolate(point_map, curr_x, curr_y, obs_x, obs_y)
             np.savetxt('my_array.txt', np.rot90(point_map), fmt='%d', delimiter=', ')
 
-        path = bfs(point_map, (curr_x, curr_y), (goal_x, goal_y))
+        #path = bfs(point_map, (curr_x, curr_y), (goal_x, goal_y))
+        path = a_star(point_map, (curr_x, curr_y), (goal_x, goal_y))
         
         if not path:
             print("No path found")
