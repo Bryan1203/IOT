@@ -149,7 +149,7 @@ def main():
                 obs_y = int(((dist*np.sin(angle_radians)) + curr_y))
 
             print("Obstacle at (",obs_x," ,",obs_y,")","is ",dist, "cm away from the car")
-            if dist >= 0 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0 and point_map[obs_x, obs_y] != 1:  
+            if dist >= 0 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0 and point_map[obs_x, obs_y] != 2:  
                 point_map[obs_x, obs_y] = 1
             time.sleep(0.09)
                 #print(point_map)
