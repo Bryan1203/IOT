@@ -20,7 +20,8 @@ def goRight():
         fc.turn_right(1)
         x += (speed4()+speed25()) * 0.1
         time.sleep(0.1)
-    orientation -= 90
+    if orientation!=-90:
+        orientation = -90
     print("%smm"%x)
     speed4.deinit()
     speed25.deinit()
@@ -73,7 +74,8 @@ def goLeft():
         fc.turn_left(1)
         x += (speed4()+speed25()) * 0.1
         time.sleep(0.1)
-    orientation += 90
+    if orientation != 90:
+        orientation = 90
     print("%smm"%x)
     speed4.deinit()
     speed25.deinit()
