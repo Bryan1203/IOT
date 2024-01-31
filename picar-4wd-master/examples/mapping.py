@@ -144,13 +144,13 @@ def main():
             # add offset for each search direction (right,left,top,bottom)
             #obs_y = min(max(0,int(dist*np.sin(angle_radians))),49)
             #obs_x = min(max(0,int(dist*np.cos(angle_radians))),49)
-
-            obs_x = int(((dist*np.cos(angle_radians)) + curr_x))
-            obs_y = int(((dist*np.cos(angle_radians)) + curr_y))
+            if dist >= 0:
+                obs_x = int(((dist*np.cos(angle_radians)) + curr_x))
+                obs_y = int(((dist*np.cos(angle_radians)) + curr_y))
 
             print("Obstacle at (",obs_x," ,",obs_y,")","is ",dist, "cm away from the car")
             if dist >= 0 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0:  
-                point_map[obs_x, obs_y] = 2
+                point_map[obs_x, obs_y] = 1
             time.sleep(0.09)
                 #print(point_map)
                 # interpolation
@@ -173,7 +173,7 @@ def main():
             #print("Path1: (", next_x,",",next_y,")")
 
             print("Full Path: (", path,")")
-            point_map[curr_x, curr_y] = 5
+            point_map[curr_x, curr_y] = 2
             time.sleep(0.1)
 if __name__ == "__main__":
     try: 
