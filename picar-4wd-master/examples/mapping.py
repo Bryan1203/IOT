@@ -9,22 +9,23 @@ map_size = 50
 orientation = 0
 def goRight(): 
     global orientation
-	speed4 = fc.Speed(4)
-	speed25 = fc.Speed(25)
-	speed4.start()
-	speed25.start()
-	x = 0
-	distance = 30
+    speed4 = fc.Speed(4)
+    speed25 = fc.Speed(25)
+    speed4.start()
+    speed25.start()
+    x = 0
+    distance = 30
 
-	while x <= distance:
-		fc.turn_right(1)
-		x += (speed4()+speed25()) * 0.1
-		time.sleep(0.1)
-	orientation -= 90
-	print("%smm"%x)
-	speed4.deinit()
-	speed25.deinit()
-	fc.stop()
+    while x <= distance:
+        fc.turn_right(1)
+        x += (speed4()+speed25()) * 0.1
+        time.sleep(0.1)
+    orientation -= 90
+    print("%smm"%x)
+    speed4.deinit()
+    speed25.deinit()
+    fc.stop()
+
 def goForward(): 
 	speed4 = fc.Speed(4)
 	speed25 = fc.Speed(25)
@@ -61,22 +62,23 @@ def goBackward():
 	fc.stop()
 def goLeft(): 
     global orientation
-	speed4 = fc.Speed(4)
-	speed25 = fc.Speed(25)
-	speed4.start()
-	speed25.start()
-	x = 0
-	distance = 30
+    speed4 = fc.Speed(4)
+    speed25 = fc.Speed(25)
+    speed4.start()
+    speed25.start()
+    x = 0
+    distance = 30
 
-	while x <= distance:
-		fc.turn_left(1)
-		x += (speed4()+speed25()) * 0.1
-		time.sleep(0.1)
-	orientation += 90
-	print("%smm"%x)
-	speed4.deinit()
-	speed25.deinit()
-	fc.stop()
+    while x <= distance:
+        fc.turn_left(1)
+        x += (speed4()+speed25()) * 0.1
+        time.sleep(0.1)
+    orientation += 90
+    print("%smm"%x)
+    speed4.deinit()
+    speed25.deinit()
+    fc.stop()
+    
 def move_car(curr_x, curr_y, next_x, next_y):
     if next_x == curr_x + 1:  # Move right
         goRight()
