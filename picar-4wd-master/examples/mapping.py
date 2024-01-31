@@ -125,6 +125,8 @@ def main():
     curr_x, curr_y = 25, 0
     goal_x, goal_y = 25, 8 
     point_map = np.zeros((map_size, map_size))
+    obs_y = 0
+    obs_x = 0
 
     while (curr_x, curr_y) != (goal_x, goal_y):
        
@@ -135,8 +137,7 @@ def main():
             angle_radians = np.radians(i + 90 + orientation) 
             
             # Calculate sine and cosine
-            obs_y = 0
-            obs_x = 0
+            
             dist = fc.get_distance_at(i)/7
             print("Distance at ",i + 90,"degree is ",dist)
             # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
@@ -148,8 +149,8 @@ def main():
             obs_y = int(((dist*np.cos(angle_radians)) + curr_y))
 
             print("Obstacle at (",obs_x," ,",obs_y,")","is ",dist, "cm away from the car")
-            if dist != -1 and dist != -2 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0:  
-                point_map[obs_x, obs_y] = 1
+            if dist >= 0 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0:  
+                point_map[obs_x, obs_y] = 2
             time.sleep(0.09)
                 #print(point_map)
                 # interpolation
