@@ -78,18 +78,23 @@ def goLeft():
     speed4.deinit()
     speed25.deinit()
     fc.stop()
-    
+
 def move_car(curr_x, curr_y, next_x, next_y):
     if next_x == curr_x + 1:  # Move right
         goRight()
+        print("going Right")
     elif next_x == curr_x - 1:  # Move left
         goLeft()
+        print("going Left")
     elif next_y == curr_y + 1:  # Move forward
         goForward()
+        print("going forward")
     elif next_y == curr_y - 1:  # Move backward
         goBackward()
-    time.sleep(1)  # Adjust as needed for the movement duration
-    fc.stop()
+        print("going backward")
+
+    time.sleep(0.1)  # Adjust as needed for the movement duration
+    #fc.stop()
 
 
 def interpolate(point_map, curr_x, curr_y, obs_x, obs_y):
