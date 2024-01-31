@@ -138,16 +138,16 @@ def main():
             obs_y = 0
             obs_x = 0
             dist = fc.get_distance_at(i)
-            print("Distance at ",i + 90,"is ",dist)
+            print("Distance at ",i + 90,"degree is ",dist)
             # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
             # add offset for each search direction (right,left,top,bottom)
             #obs_y = min(max(0,int(dist*np.sin(angle_radians))),49)
             #obs_x = min(max(0,int(dist*np.cos(angle_radians))),49)
 
-            obs_x = int((dist*np.cos(angle_radians) + curr_x)/7)
-            obs_y = int((dist*np.cos(angle_radians) + curr_y)/7)
+            obs_x = int(((dist*np.cos(angle_radians))/7 + curr_x))
+            obs_y = int(((dist*np.cos(angle_radians))/7 + curr_y))
 
-            print("Distance at (",obs_x," ,",obs_y,")",i + 90,"is ",fc.get_distance_at(i))
+            print("Obstacle at (",obs_x," ,",obs_y,")","is ",dist, "cm away from the car")
             if dist != -1 and dist != -2 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0:  
                 point_map[obs_x, obs_y] = 1
             time.sleep(0.09)
