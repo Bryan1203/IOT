@@ -138,7 +138,7 @@ def main():
             
             # Calculate sine and cosine
             
-            dist = fc.get_distance_at(i)/7
+            dist = fc.get_distance_at(i)/5
             print("Distance at ",i + 90,"degree is ",dist)
             # this checks for if the car is in bounds and  ignores the obstacles outside of the boundaries
             # add offset for each search direction (right,left,top,bottom)
