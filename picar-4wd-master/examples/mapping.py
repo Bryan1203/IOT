@@ -5,7 +5,7 @@ import math
 from queue import Queue
 from queue import PriorityQueue
 import itertools
-from scipy.ndimage import binary_dilation
+#from scipy.ndimage import binary_dilation
 
 speed = 30
 map_size = 50
@@ -19,22 +19,30 @@ def padPointMap(arr):
 
         # Loop through each row in the array
         for i, row in enumerate(arr):
-            # Use binary dilation to pad 1s around the original 1s
-            dilated = binary_dilation(row)
+            # Find the indices of the 1s
+            ones_idx = np.where(row == 1)[0]
 
-            # Create a new row that is the logical OR of the original row and the dilated row
-            new_row = np.logical_or(row, dilated)
+            # Find the groups of consecutive 1s
+            groups = np.split(ones_idx, np.where(np.diff(ones_idx) != 1)[0] + 1)
 
-            # Replace the original row with the new row in the copied array
-            arr_copy[i] = new_row
+            # Loop through each group
+            for group in groups:
+                # If the group is longer than 3
+                if len(group) > 3:
+                    # Pad two 1s before and after the group
+                    if group[0] > 1:
+                        arr_copy[i, group[0] - 1] = 1
+                    if group[-1] < len(row) - 1:
+                        arr_copy[i, group[-1] + 1] = 1
 
         return arr_copy
 
     # Pad 1s around groups of consecutive 1s in rows
-    after_arr = pad_ones(arr)
+    after_arr = pad_ones(before_arr)
 
     # Pad 1s around groups of consecutive 1s in columns
     after_arr = pad_ones(after_arr.T).T
+
     return after_arr
     
     
