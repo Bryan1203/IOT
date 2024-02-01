@@ -21,12 +21,22 @@ from tflite_support.task import core
 from tflite_support.task import processor
 from tflite_support.task import vision
 import utils
+import picar_4wd as fc
+import threading
+import os
 
+pause_event = threading.Event()
 
+class UserInterrupt(Exception):
+    fc.stop()
+    time.sleep(3)
+    
 
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         enable_edgetpu: bool) -> None:
+          
+  global pause_event
   """Continuously run inference on images acquired from the camera.
 
   Args:
@@ -91,7 +101,16 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
         if (category.category_name=="stop sign" and time.time()>(detectStartTime+10)):
           print("stop sign detected!")
+          if os.path.exists('resume.txt'):
+            os.remove('resume.txt')
+          
+          #pause_event.set()  # Signal the Thread to Pause to pause
+          time.sleep(5)  # Main program doing some more work
+          
+          #raise UserInterrupt("Stop sign detected!")
+          #pause_event.clear()
           detectStartTime = time.time()
+          open('resume.txt', 'a').close()
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detection_result)
 

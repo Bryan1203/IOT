@@ -5,6 +5,8 @@ import math
 from queue import Queue
 from queue import PriorityQueue
 import itertools
+import object_detect
+import os
 #from scipy.ndimage import binary_dilation
 
 speed = 30
@@ -28,14 +30,14 @@ def padPointMap(arr):
             # Loop through each group
             for group in groups:
                 # If the group is longer than 3
-                if len(group) > 3:
+                if len(group) >= 3:
                     # Pad two 1s before and after the group
                     if group[0] > 1:
                         arr_copy[i, group[0] - 1] = 3
-                        arr_copy[i, group[0] - 2] = 3
+                        #arr_copy[i, group[0] - 2] = 3
                     if group[-1] < len(row) - 1:
                         arr_copy[i, group[-1] + 1] = 3
-                        arr_copy[i, group[-1] + 2] = 3
+                        #arr_copy[i, group[-1] + 2] = 3
 
         return arr_copy
 
@@ -55,7 +57,7 @@ def padPointMap(arr):
 def goRight(): 
     global orientation
     fc.turn_right(1)
-    time.sleep(1.2)
+    time.sleep(1.15)
     fc.stop()
     #update the orientation
     if orientation== 0:
@@ -69,7 +71,7 @@ def goRight():
 
 def goForward(): 
     fc.forward(1)
-    time.sleep(0.3)
+    time.sleep(0.4)
     fc.stop()
 
 def goBackward(): 
@@ -250,13 +252,18 @@ def bfs(point_map, start, goal):
 
 def main():
     #curr_x, curr_y = 25, 0
-    goal_x, goal_y = 25, 10 
+    goal_x, goal_y = 25, 15 
     point_map = np.zeros((map_size, map_size))
+    #point_map[goal_x, goal_y] = 9
     obs_y = 0
     obs_x = 0
     global orientation
+    global pause_event
 
     while (curr_x, curr_y) != (goal_x, goal_y):
+        #pause_event.wait()
+        while not os.path.exists('resume.txt'):
+            time.sleep(1)
        
 
         for i in range(-90, 90, 5):
@@ -268,7 +275,7 @@ def main():
             
 
             dist = fc.get_distance_at(i)
-            if dist >= 70:
+            if dist >= 50:
                 dist = -3
             else:
                 dist/=7.5
