@@ -12,44 +12,41 @@ orientation = 0
 curr_x = 25
 curr_y = 0
 def padPointMap(arr):
+    def get_indices(arr):
+        indices_2d = []
+        for row in arr:
+            groups = [(k, list(g)) for k, g in itertools.groupby(row)]
+            indices = []
+            idx = 0
+            for k, g in groups:
+                if k == 1 and len(g) > 3:
+                    indices.append((idx, idx + len(g) - 1))
+                idx += len(g)
+            indices_2d.append(indices)
+        return indices_2d
 
-    # Initialize an empty 2D list to store the indices for each row
-    indices_2d = []
+    # Get indices for rows
+    row_indices = get_indices(arr)
 
-    # Loop through each row in the array
-    for row in arr:
-        # Use itertools.groupby to group consecutive 1s
-        groups = [(k, list(g)) for k, g in itertools.groupby(row)]
+    # Get indices for columns
+    col_indices = get_indices(arr.T)
 
-        # Initialize an empty list to store the indices for this row
-        indices = []
-
-        # Initialize a counter for the current index
-        idx = 0
-
-        # Loop through the groups
-        for k, g in groups:
-            # If the group is 1s and the length of the group is greater than 3
-            if k == 1 and len(g) >= 4:
-                # Append the start and end index of the group to the indices list
-                indices.append((idx, idx + len(g) - 1))
-            # Update the index counter
-            idx += len(g)
-
-        # Append the indices for this row to the 2D list
-        indices_2d.append(indices)
-
-    #print(indices_2d)
-
-    # Now you can use these indices to modify the original 2D array
+    # Modify original 2D array for rows
     for i, row in enumerate(arr):
-        for start, end in indices_2d[i]:
-            if start > 0:
+        for start, end in row_indices[i]:
+            if start > 1:
                 row[start - 1] = 1
-            if end < len(row) - 1:
+            if end < len(row) - 2:
                 row[end + 1] = 1
 
-    #print(arr)
+    # Modify original 2D array for columns
+    for i, col in enumerate(arr.T):
+        for start, end in col_indices[i]:
+            if start > 1:
+                arr[start - 1, i] = 1
+            if end < len(col) - 2:
+                arr[end + 1, i] = 1
+
 
 
 
