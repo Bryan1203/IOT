@@ -12,7 +12,7 @@ orientation = 0
 def goRight(): 
     global orientation
     fc.turn_right(1)
-    time.sleep(1.25)
+    time.sleep(1.2)
     fc.stop()
     #update the orientation
     if orientation== 0:
@@ -26,7 +26,7 @@ def goRight():
 
 def goForward(): 
     fc.forward(1)
-    time.sleep(0.5)
+    time.sleep(0.3)
     fc.stop()
 
 def goBackward(): 
@@ -234,8 +234,13 @@ def main():
             print("Full Path: (", path,")")
             point_map[curr_x, curr_y] = 2
             time.sleep(0.1)
+def goten():
+    for i in range (10):
+        goForward()
+        time.sleep(0.5)
 if __name__ == "__main__":
     try: 
-        main()
+        #main()
+        goten()
     finally: 
         fc.stop()
