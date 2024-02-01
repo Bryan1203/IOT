@@ -31,9 +31,9 @@ def padPointMap(arr):
                 if len(group) > 3:
                     # Pad two 1s before and after the group
                     if group[0] > 1:
-                        arr_copy[i, group[0] - 1] = 1
+                        arr_copy[i, group[0] - 1] = 2
                     if group[-1] < len(row) - 1:
-                        arr_copy[i, group[-1] + 1] = 1
+                        arr_copy[i, group[-1] + 1] = 2
 
         return arr_copy
 
