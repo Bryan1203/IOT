@@ -8,6 +8,8 @@ from queue import PriorityQueue
 speed = 30
 map_size = 50
 orientation = 0
+curr_x = 0
+curr_y = 0
 
 def goRight(): 
     global orientation
@@ -49,65 +51,91 @@ def goLeft():
     elif orientation == 90:
         orientation = 180
 
-def move_car(curr_x, curr_y, next_x, next_y):
+def move_car(next_x, next_y):
     global orientation
+    global curr_x
+    global curr_y
     if next_x == curr_x + 1:  # Move right
         if orientation == 0:
             goRight()
-            time.sleep(0.1)
-            goForward()
+            #time.sleep(0.1)
+            #goForward()
+
         elif orientation == -90: 
             goForward()
+            #update our curr x and y 
+            curr_x = next_x
+            curr_y = next_y
+
         elif orientation == 180:
             goLeft()
-            time.sleep(0.1)
-            goForward()
+            #time.sleep(0.1)
+            #goForward()
         elif orientation == 90:
             goRight()
-            time.sleep(0.1)
-            goRight()
-            time.sleep(0.1)
-            goForward()
+            #time.sleep(0.1)
+            #goRight()
+            #time.sleep(0.1)
+            #goForward()
         print("going Right")
 
     elif next_x == curr_x - 1:  # Move left
         if orientation == 0:
             goLeft()
-            time.sleep(0.1)
-            goForward()
+            #time.sleep(0.1)
+            #goForward()
         elif orientation == 90:
             goForward()
+            #update x and y
+            curr_x = next_x
+            curr_y = next_y
         elif orientation == 180:
             goRight()
-            time.sleep(0.1)
-            goForward()
+            #time.sleep(0.1)
+            #goForward()
+        elif orientation == -90:
+            goLeft()
+
         print("going Left")
     elif next_y == curr_y + 1:  # Move forward
         if orientation == 0:
             goForward()
+            #update x and y
+            curr_x = next_x
+            curr_y = next_y
+
         elif orientation == -90:
             goLeft()
-            goForward()
+            #goForward()
         elif orientation == 90:
             goRight()
-            time.sleep(0.1)
-            goForward()
+            #time.sleep(0.1)
+            #goForward()
         elif orientation == 180:
            goBackward()
+           #update x and y
+           curr_x = next_x
+           curr_y = next_y
         print("going forward")
     elif next_y == curr_y - 1:  # Move backward
         if orientation == 180:
             goForward()
+            #update x and y
+            curr_x = next_x
+            curr_y = next_y
         elif orientation == -90:
             goRight()
-            time.sleep(0.1)
-            goForward()
+            #time.sleep(0.1)
+            #goForward()
         elif orientation == 90:
             goLeft()
-            time.sleep(0.1)
-            goForward()
+            #time.sleep(0.1)
+            #goForward()
         elif orientation == 0:
             goBackward()
+            #update x and y
+            curr_x = next_x
+            curr_y = next_y
             
             
         print("going backward")
@@ -232,8 +260,8 @@ def main():
         
             next_x, next_y = path[1]
             # Code to move the car to (next_x, next_y)
-            move_car(curr_x, curr_y, next_x, next_y)
-            curr_x, curr_y = next_x, next_y
+            move_car(next_x, next_y)
+            #curr_x, curr_y = next_x, next_y
             print("Curr: (", curr_x,",",curr_y,")")
             #print("Path1: (", next_x,",",next_y,")")
 
