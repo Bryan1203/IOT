@@ -38,7 +38,7 @@ def padPointMap(arr):
         return arr_copy
 
     # Pad 1s around groups of consecutive 1s in rows
-    after_arr = pad_ones(before_arr)
+    after_arr = pad_ones(arr)
 
     # Pad 1s around groups of consecutive 1s in columns
     after_arr = pad_ones(after_arr.T).T
