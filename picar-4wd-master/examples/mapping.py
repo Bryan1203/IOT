@@ -5,6 +5,7 @@ import math
 from queue import Queue
 from queue import PriorityQueue
 import itertools
+from scipy.ndimage import binary_dilation
 
 speed = 30
 map_size = 50
@@ -12,40 +13,31 @@ orientation = 0
 curr_x = 25
 curr_y = 0
 def padPointMap(arr):
-    def get_indices(arr):
-        indices_2d = []
-        for row in arr:
-            groups = [(k, list(g)) for k, g in itertools.groupby(row)]
-            indices = []
-            idx = 0
-            for k, g in groups:
-                if k == 1 and len(g) > 3:
-                    indices.append((idx, idx + len(g) - 1))
-                idx += len(g)
-            indices_2d.append(indices)
-        return indices_2d
+    def pad_ones(arr):
+        # Create a copy of the array to avoid modifying the original array
+        arr_copy = arr.copy()
 
-    # Get indices for rows
-    row_indices = get_indices(arr)
+        # Loop through each row in the array
+        for i, row in enumerate(arr):
+            # Use binary dilation to pad 1s around the original 1s
+            dilated = binary_dilation(row)
 
-    # Get indices for columns
-    col_indices = get_indices(arr.T)
+            # Create a new row that is the logical OR of the original row and the dilated row
+            new_row = np.logical_or(row, dilated)
 
-    # Modify original 2D array for rows
-    for i, row in enumerate(arr):
-        for start, end in row_indices[i]:
-            if start > 1:
-                row[start - 1] = 1
-            if end < len(row) - 2:
-                row[end + 1] = 1
+            # Replace the original row with the new row in the copied array
+            arr_copy[i] = new_row
 
-    # Modify original 2D array for columns
-    for i, col in enumerate(arr.T):
-        for start, end in col_indices[i]:
-            if start > 1:
-                arr[start - 1, i] = 1
-            if end < len(col) - 2:
-                arr[end + 1, i] = 1
+        return arr_copy
+
+    # Pad 1s around groups of consecutive 1s in rows
+    after_arr = pad_ones(arr)
+
+    # Pad 1s around groups of consecutive 1s in columns
+    after_arr = pad_ones(after_arr.T).T
+    return after_arr
+    
+    
 
 
 
@@ -284,7 +276,7 @@ def main():
             if dist >= 0 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0 and point_map[obs_x, obs_y] != 2:  
                 point_map[obs_x, obs_y] = 1
             time.sleep(0.09)
-            padPointMap(point_map)
+            point_map = padPointMap(point_map)
                 #print(point_map)
                 # interpolation
                 #if counter > 5:
