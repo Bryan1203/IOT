@@ -4,12 +4,54 @@ import numpy as np
 import math
 from queue import Queue
 from queue import PriorityQueue
+import itertools
 
 speed = 30
 map_size = 50
 orientation = 0
 curr_x = 25
 curr_y = 0
+def padPointMap(arr):
+
+    # Initialize an empty 2D list to store the indices for each row
+    indices_2d = []
+
+    # Loop through each row in the array
+    for row in arr:
+        # Use itertools.groupby to group consecutive 1s
+        groups = [(k, list(g)) for k, g in itertools.groupby(row)]
+
+        # Initialize an empty list to store the indices for this row
+        indices = []
+
+        # Initialize a counter for the current index
+        idx = 0
+
+        # Loop through the groups
+        for k, g in groups:
+            # If the group is 1s and the length of the group is greater than 3
+            if k == 1 and len(g) >= 4:
+                # Append the start and end index of the group to the indices list
+                indices.append((idx, idx + len(g) - 1))
+            # Update the index counter
+            idx += len(g)
+
+        # Append the indices for this row to the 2D list
+        indices_2d.append(indices)
+
+    #print(indices_2d)
+
+    # Now you can use these indices to modify the original 2D array
+    for i, row in enumerate(arr):
+        for start, end in indices_2d[i]:
+            if start > 0:
+                row[start - 1] = 1
+            if end < len(row) - 1:
+                row[end + 1] = 1
+
+    #print(arr)
+
+
 
 def goRight(): 
     global orientation
@@ -245,6 +287,7 @@ def main():
             if dist >= 0 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0 and point_map[obs_x, obs_y] != 2:  
                 point_map[obs_x, obs_y] = 1
             time.sleep(0.09)
+            padPointMap(point_map)
                 #print(point_map)
                 # interpolation
                 #if counter > 5:
