@@ -8,7 +8,7 @@ from queue import PriorityQueue
 speed = 30
 map_size = 50
 orientation = 0
-curr_x = 0
+curr_x = 25
 curr_y = 0
 
 def goRight(): 
@@ -103,6 +103,7 @@ def move_car(next_x, next_y):
             #update x and y
             curr_x = next_x
             curr_y = next_y
+            print("(", curr_x, " ", curr_y, " )", "(", next_x, " ", next_y, " )")
 
         elif orientation == -90:
             goLeft()
@@ -207,7 +208,7 @@ def bfs(point_map, start, goal):
     return None
 
 def main():
-    curr_x, curr_y = 25, 0
+    #curr_x, curr_y = 25, 0
     goal_x, goal_y = 25, 10 
     point_map = np.zeros((map_size, map_size))
     obs_y = 0
