@@ -37,6 +37,12 @@ curr_y = 0
 # This is your flag to signal the thread to pause
 #pause_event = threading.Event()
 
+def stopSignWait(waitTime):
+    event.set()
+    time.sleep(waitTime)
+    #pause_event.set()
+    event.clear()
+
 
 
 def padPointMap(arr):
@@ -388,10 +394,9 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         if (category.category_name=="stop sign" and time.time()>(detectStartTime+30)):
           print("stop sign detected!")
           #pause_event.clear()
-          event.set()
-          time.sleep(10)
-          #pause_event.set()
-          event.clear()
+          #calls the stop sign wait func
+          p3.start()
+          
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detection_result)
 
@@ -469,6 +474,7 @@ stop_event = Event()
 
 p1 = Process(target=slam, args=(stop_event,))
 p2 = Process(target=object_detect_func, args=(stop_event,))
+p3 = Process(target=stopSignWait, args=(10))
 
 p1.start()
 p2.start()
