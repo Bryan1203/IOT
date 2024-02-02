@@ -329,6 +329,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
          
   #global pause_event
   #pause_event.set() 
+  p3 = Process(target=object_detect_func,args=(stop_event,))
+  p3.daemon = True
   """Continuously run inference on images acquired from the camera.
 
   Args:
@@ -395,7 +397,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           print("stop sign detected!")
           #pause_event.clear()
           #calls the stop sign wait func
-          t3.start()
+          p3.start()
           
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detection_result)
@@ -474,7 +476,7 @@ stop_event = Event()
 
 p1 = Process(target=slam, args=(stop_event,))
 p2 = Process(target=object_detect_func, args=(stop_event,))
-t3 = threading.Thread(target=object_detect_func,args=(stop_event,))
+
 
 p1.start()
 p2.start()
