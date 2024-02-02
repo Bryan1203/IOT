@@ -319,7 +319,7 @@ def slam(event):
 
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
-        enable_edgetpu: bool) -> None:
+        enable_edgetpu: bool,event) -> None:
          
   #global pause_event
   #pause_event.set() 
@@ -453,7 +453,7 @@ def object_detect_func(event):
   args = parser.parse_args()
 
   run(args.model, int(args.cameraId), args.frameWidth, args.frameHeight,
-      int(args.numThreads), bool(args.enableEdgeTPU))
+      int(args.numThreads), bool(args.enableEdgeTPU),event)
   
 
 # t1 = threading.Thread(target=slam)
