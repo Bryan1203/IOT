@@ -259,7 +259,7 @@ def slam():
     global orientation
     global pause_event
 
-    while (curr_x, curr_y) != (goal_x, goal_y) and ~pause_event.wait():
+    while (curr_x, curr_y) != (goal_x, goal_y):
         for i in range(-90, 90, 5):
             
             # Convert degrees to radians
@@ -300,7 +300,7 @@ def slam():
         if not path:
             print("No path found")
             break
-        else:
+        elif pause_event.wait():
         
             next_x, next_y = path[1]
             # Code to move the car to (next_x, next_y)
