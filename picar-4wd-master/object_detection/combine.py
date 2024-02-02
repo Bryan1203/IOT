@@ -24,7 +24,13 @@ import math
 from queue import Queue
 from queue import PriorityQueue
 
+#mapping global variable
 
+speed = 30
+map_size = 50
+orientation = 0
+curr_x = 25
+curr_y = 0
 
 
 # This is your flag to signal the thread to pause
