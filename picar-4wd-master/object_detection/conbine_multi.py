@@ -37,9 +37,9 @@ curr_y = 0
 # This is your flag to signal the thread to pause
 #pause_event = threading.Event()
 
-def stopSignWait(event, waitTime):
+def stopSignWait(event):
     event.set()
-    time.sleep(waitTime)
+    time.sleep(10)
     #pause_event.set()
     event.clear()
 
@@ -395,7 +395,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           print("stop sign detected!")
           #pause_event.clear()
           #calls the stop sign wait func
-          p3.start()
+          t3.start()
           
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detection_result)
@@ -474,11 +474,11 @@ stop_event = Event()
 
 p1 = Process(target=slam, args=(stop_event,))
 p2 = Process(target=object_detect_func, args=(stop_event,))
-p3 = Process(target=stopSignWait, args=(stop_event,10,))
+t3 = threading.Thread(target=object_detect_func,args=(stop_event,))
 
 p1.start()
 p2.start()
 
 p1.join()
 p2.join()
-p3.join()
+
