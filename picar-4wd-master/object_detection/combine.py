@@ -316,8 +316,9 @@ def slam():
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         enable_edgetpu: bool) -> None:
-          
+         
   global pause_event
+  pause_event.set() 
   """Continuously run inference on images acquired from the camera.
 
   Args:
