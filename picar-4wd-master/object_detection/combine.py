@@ -300,7 +300,7 @@ def slam():
         if not path:
             print("No path found")
             break
-        elif pause_event.wait():
+        elif ~pause_event.wait():
         
             next_x, next_y = path[1]
             # Code to move the car to (next_x, next_y)
