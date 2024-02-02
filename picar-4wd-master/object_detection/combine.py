@@ -2,6 +2,29 @@ import threading
 import object_detect
 import mapping
 
+#for object detect
+import argparse
+import sys
+import time
+
+import cv2
+from tflite_support.task import core
+from tflite_support.task import processor
+from tflite_support.task import vision
+import utils
+import picar_4wd as fc
+import threading
+import os
+
+#for mapping
+#import time
+#import picar_4wd as fc
+import numpy as np
+import math
+from queue import Queue
+from queue import PriorityQueue
+
+
 
 
 # This is your flag to signal the thread to pause
@@ -230,7 +253,7 @@ def slam():
     global orientation
     global pause_event
 
-    while (curr_x, curr_y) != (goal_x, goal_y) and !=pause_event.wait():
+    while (curr_x, curr_y) != (goal_x, goal_y) and ~pause_event.wait():
         for i in range(-90, 90, 5):
             
             # Convert degrees to radians
