@@ -397,7 +397,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           print("stop sign detected!")
           #pause_event.clear()
           #calls the stop sign wait func
-          p3.start()
+          if not p3.is_alive():
+            p3.start()
           
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detection_result)
