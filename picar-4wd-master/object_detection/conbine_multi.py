@@ -474,7 +474,7 @@ stop_event = Event()
 
 p1 = Process(target=slam, args=(stop_event,))
 p2 = Process(target=object_detect_func, args=(stop_event,))
-p3 = Process(target=stopSignWait, args=(10))
+p3 = Process(target=stopSignWait, args=(10,))
 
 p1.start()
 p2.start()
