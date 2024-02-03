@@ -109,7 +109,7 @@ def goBackward():
 def goLeft(): 
     global orientation
     fc.turn_left(1)
-    time.sleep(1.25)
+    time.sleep(1.3)
     fc.stop()
     #update the orientation
     if orientation== 0:
@@ -302,7 +302,10 @@ def slam(event):
                 # interpolation
                 #if counter > 5:
                 #interpolate(point_map, curr_x, curr_y, obs_x, obs_y)
-            np.savetxt('my_array.txt', np.rot90(point_map), fmt='%d', delimiter=', ')
+            counter = 0
+            filename = f'my_array_{counter}.txt'
+            np.savetxt(filename, np.rot90(point_map), fmt='%d', delimiter=', ')
+            counter+=1
 
         #path = bfs(point_map, (curr_x, curr_y), (goal_x, goal_y))
         path = a_star(point_map, (curr_x, curr_y), (goal_x, goal_y))
