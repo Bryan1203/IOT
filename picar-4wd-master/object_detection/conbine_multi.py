@@ -325,9 +325,9 @@ def slam(event):
             point_map[curr_x, curr_y] = 2
             time.sleep(0.1)
             #save the point map
-            filename = f'my_array_{counter}.txt'
-            np.savetxt(filename, np.rot90(point_map), fmt='%d', delimiter=', ')
-            counter+=1
+        filename = f'my_array_{counter}.txt'
+        np.savetxt(filename, np.rot90(point_map), fmt='%d', delimiter=', ')
+        counter+=1
 
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
