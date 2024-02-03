@@ -268,7 +268,7 @@ def slam(event):
     obs_x = 0
     global orientation
     global pause_event
-
+    counter = 0
     while (curr_x, curr_y) != (goal_x, goal_y):
         for i in range(-90, 90, 5):
             
@@ -302,7 +302,7 @@ def slam(event):
                 # interpolation
                 #if counter > 5:
                 #interpolate(point_map, curr_x, curr_y, obs_x, obs_y)
-            counter = 0
+            
             filename = f'my_array_{counter}.txt'
             np.savetxt(filename, np.rot90(point_map), fmt='%d', delimiter=', ')
             counter+=1
