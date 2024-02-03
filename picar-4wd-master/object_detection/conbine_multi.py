@@ -38,6 +38,7 @@ curr_y = 0
 #pause_event = threading.Event()
 
 def stopSignWait(event):
+    print("waiting for Stop")
     event.set()
     time.sleep(10)
     #pause_event.set()
