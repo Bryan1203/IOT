@@ -15,6 +15,7 @@ import utils
 import picar_4wd as fc
 import threading
 import os
+import shutil
 
 #for mapping
 #import time
@@ -270,7 +271,7 @@ def slam(event):
     global pause_event
     counter = 0
     if os.path.exists('point_map_txt'):
-        os.rmdir('point_map_txt')
+        shutil.rmtree('point_map_txt')
     os.makedirs('point_map_txt')
     while (curr_x, curr_y) != (goal_x, goal_y):
         for i in range(-90, 90, 5):
