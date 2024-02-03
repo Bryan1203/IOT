@@ -397,6 +397,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             print("stop sign detected!")
           #pause_event.clear()
           #calls the stop sign wait func
+            detectStartTime = time.time()
             p3 = Process(target=stopSignWait,args=(stop_event,))
             p3.daemon = True
             p3.start()
