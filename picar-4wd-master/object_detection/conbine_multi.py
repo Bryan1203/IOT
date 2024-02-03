@@ -394,12 +394,12 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
       for category in detection.categories:
 
         if (category.category_name=="stop sign" and time.time()>(detectStartTime+30)):
-          print("stop sign detected!")
+            print("stop sign detected!")
           #pause_event.clear()
           #calls the stop sign wait func
-        p3 = Process(target=stopSignWait,args=(stop_event,))
-        p3.daemon = True
-        p3.start()
+            p3 = Process(target=stopSignWait,args=(stop_event,))
+            p3.daemon = True
+            p3.start()
           
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detection_result)
