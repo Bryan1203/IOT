@@ -329,7 +329,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
          
   #global pause_event
   #pause_event.set() 
-  p3 = Process(target=object_detect_func,args=(stop_event,))
+  p3 = Process(target=stopSignWait,args=(stop_event,))
   p3.daemon = True
   """Continuously run inference on images acquired from the camera.
 
