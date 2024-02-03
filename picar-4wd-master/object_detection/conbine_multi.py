@@ -269,6 +269,9 @@ def slam(event):
     global orientation
     global pause_event
     counter = 0
+    if os.path.exists('point_map_txt'):
+        os.rmdir('point_map_txt')
+    os.makedirs('point_map_txt')
     while (curr_x, curr_y) != (goal_x, goal_y):
         for i in range(-90, 90, 5):
             
@@ -325,7 +328,9 @@ def slam(event):
             point_map[curr_x, curr_y] = 2
             time.sleep(0.1)
             #save the point map
-        filename = f'my_array_{counter}.txt'
+
+        
+        filename = f'point_map_txt/my_array_{counter}.txt'
         np.savetxt(filename, np.rot90(point_map), fmt='%d', delimiter=', ')
         counter+=1
 
