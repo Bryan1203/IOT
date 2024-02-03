@@ -109,7 +109,7 @@ def goBackward():
 def goLeft(): 
     global orientation
     fc.turn_left(1)
-    time.sleep(1.3)
+    time.sleep(1.25)
     fc.stop()
     #update the orientation
     if orientation== 0:
