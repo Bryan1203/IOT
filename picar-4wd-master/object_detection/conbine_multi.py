@@ -303,9 +303,7 @@ def slam(event):
                 #if counter > 5:
                 #interpolate(point_map, curr_x, curr_y, obs_x, obs_y)
             
-            filename = f'my_array_{counter}.txt'
-            np.savetxt(filename, np.rot90(point_map), fmt='%d', delimiter=', ')
-            counter+=1
+            
 
         #path = bfs(point_map, (curr_x, curr_y), (goal_x, goal_y))
         path = a_star(point_map, (curr_x, curr_y), (goal_x, goal_y))
@@ -326,6 +324,10 @@ def slam(event):
             print("Full Path: (", path,")")
             point_map[curr_x, curr_y] = 2
             time.sleep(0.1)
+            #save the point map
+            filename = f'my_array_{counter}.txt'
+            np.savetxt(filename, np.rot90(point_map), fmt='%d', delimiter=', ')
+            counter+=1
 
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
