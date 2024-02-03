@@ -84,7 +84,7 @@ def padPointMap(arr):
 def goRight(): 
     global orientation
     fc.turn_right(1)
-    time.sleep(1.15)
+    time.sleep(1.25)
     fc.stop()
     #update the orientation
     if orientation== 0:
