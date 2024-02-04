@@ -324,7 +324,8 @@ def goten():
         time.sleep(0.5)
 if __name__ == "__main__":
     try: 
-        goRight()
+        main()
+        #goRight()
         #goten()
     finally: 
         fc.stop()

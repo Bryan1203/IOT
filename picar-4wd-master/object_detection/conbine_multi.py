@@ -32,7 +32,7 @@ speed = 30
 map_size = 50
 orientation = 0
 curr_x = 25
-curr_y = 0
+curr_y = 10
 
 
 # This is your flag to signal the thread to pause
@@ -85,7 +85,7 @@ def padPointMap(arr):
 def goRight(): 
     global orientation
     fc.turn_right(1)
-    time.sleep(1.25)
+    time.sleep(1.20)
     fc.stop()
     #update the orientation
     if orientation== 0:
@@ -261,8 +261,8 @@ def a_star(point_map, start, goal):
 
 
 def slam(event):
-    #curr_x, curr_y = 25, 0
-    goal_x, goal_y = 25, 15 
+    #curr_x, curr_y = 25, 10 
+    goal_x, goal_y = 23, 21 
     point_map = np.zeros((map_size, map_size))
     #point_map[goal_x, goal_y] = 9
     obs_y = 0
@@ -283,7 +283,7 @@ def slam(event):
             
 
             dist = fc.get_distance_at(i)
-            if dist >= 50:
+            if dist >= 40:
                 dist = -3
             else:
                 dist/=7.5
@@ -297,9 +297,10 @@ def slam(event):
                 obs_x = int(((dist*np.cos(angle_radians)) + curr_x))
                 obs_y = int(((dist*np.sin(angle_radians)) + curr_y))
 
-            print("Obstacle at (",obs_x," ,",obs_y,")","is ",dist, "cm away from the car")
+            
             if dist >= 0 and obs_x < map_size and obs_y < map_size and obs_x >=0 and obs_y>=0 and point_map[obs_x, obs_y] != 2:  
                 point_map[obs_x, obs_y] = 1
+                print("Obstacle at (",obs_x," ,",obs_y,")","is ",dist, "cm away from the car")
             time.sleep(0.09)
             point_map = padPointMap(point_map)
                 #print(point_map)

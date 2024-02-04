@@ -23,7 +23,7 @@ def main():
     point_map = np.zeros((50, 50))
     while True:
         counter = 0
-        for i in range(-90, 90, 18):
+        for i in range(-90, 90, 5):
             
             # Convert degrees to radians
             angle_radians = np.radians(i + 90)
@@ -34,12 +34,12 @@ def main():
             prev_y = obs_y
             prev_x = obs_x
             dist = fc.get_distance_at(i)
-            print("Distance at ",i + 90,"is ",dist)
-            obs_y = min(max(0,int(dist*np.sin(angle_radians))+curr_y),49)
-            obs_x = min(max(0,int(dist*np.cos(angle_radians))+curr_x),49)
+            #print("Distance at ",i + 90,"is ",dist)
+            obs_y = int(dist*np.sin(angle_radians))+curr_y
+            obs_x = int(dist*np.cos(angle_radians))+curr_x
             
             print("Distance at (",obs_x," ,",obs_y,")",i + 90,"is ",fc.get_distance_at(i))
-            print("Speed: " , fc.speed_val())
+            #print("Speed: " , fc.speed_val())
             if dist != -1:  
                 point_map[obs_x,obs_y] = 1
             time.sleep(0.09)
