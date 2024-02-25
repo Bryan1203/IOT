@@ -19,7 +19,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print("data type: ",type(data))   
                 client.sendall(data) # Echo back to client
                 
-                if 'W' in data:
+                if b'W' in data:
                     print("W pressed!!!")
                     cm.goForward()
                 if data == "S":
