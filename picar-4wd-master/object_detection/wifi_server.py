@@ -22,12 +22,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 if b'W' in data:
                     print("W pressed!!!")
                     cm.goForward()
-                if data == "S":
+                if  b'S' in data:
                     cm.goBackward()
-                if data == "A":
+                if  b'A' in data:
                     cm.goLeft()
-                if data == "D":
+                if  b'D' in data:
                     cm.goRight()
+                if b'U' in data:
+                    client.sendall(fc.get_distance_at(0))
+
 
     except: 
         print("Closing socket")
