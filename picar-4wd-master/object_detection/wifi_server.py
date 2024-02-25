@@ -15,11 +15,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print("server recv from: ", clientInfo)
             data = client.recv(1024)      # receive 1024 Bytes of message in binary format
             if data != b"":
-                print(data)     
+                print("data before: ",data)     
                 client.sendall(data) # Echo back to client
                 clean_data = data.replace('\r\n','')
                 clean_data = clean_data.replace('b','')
-                print(clean_data)
+                print("data after: ",clean_data)
                 if clean_data == "W":
                     print("W pressed!!!")
                     cm.goForward()
