@@ -17,10 +17,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if data != b"":
                 print("data before: ",data)     
                 client.sendall(data) # Echo back to client
-                clean_data = data.replace('\r\n','')
-                clean_data = clean_data.replace('b','')
-                print("data after: ",clean_data)
-                if clean_data == "W":
+                
+                if 'W' in data:
                     print("W pressed!!!")
                     cm.goForward()
                 if data == "S":
