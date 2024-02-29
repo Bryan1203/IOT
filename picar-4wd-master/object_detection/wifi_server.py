@@ -17,19 +17,26 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if data != b"":
                 print("data before: ",data)     
                 print("data type: ",type(data))   
-                client.sendall(data) # Echo back to client
+                client.sendall(fc.get_distance_at(0)) # Echo back to client
                 
                 if b'W' in data:
                     print("W pressed!!!")
                     cm.goForward()
+                    client.sendall(cm.getOrientation())
                 if  b'S' in data:
                     cm.goBackward()
+                    client.sendall(cm.getOrientation())
                 if  b'A' in data:
                     cm.goLeft()
+                    client.sendall(cm.getOrientation())
                 if  b'D' in data:
                     cm.goRight()
+                    client.sendall(cm.getOrientation())
                 if b'U' in data:
-                    client.sendall(fc.get_distance_at(0))
+                    USdata = fc.get_distance_at(0)
+                    print(type(USdata))
+                    #print(type(struct.pack('f',USdata)))
+                    client.sendall(str(USdata).encode())
 
 
     except: 

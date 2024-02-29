@@ -38,6 +38,9 @@ curr_y = 10
 # This is your flag to signal the thread to pause
 #pause_event = threading.Event()
 
+def getOrientation():
+    return orientation
+
 def stopSignWait(event):
     print("waiting for Stop")
     event.set()
