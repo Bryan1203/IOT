@@ -2,7 +2,7 @@ import socket
 import picar_4wd as fc
 import combine_multi as cm
 
-HOST = "192.168.68.126" # IP address of your Raspberry PI
+HOST = "192.168.68.81" # IP address of your Raspberry PI
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -17,21 +17,21 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if data != b"":
                 print("data before: ",data)     
                 print("data type: ",type(data))   
-                client.sendall(fc.get_distance_at(0)) # Echo back to client
+                #client.sendall(fc.get_distance_at(0)) # Echo back to client
                 
                 if b'W' in data:
                     print("W pressed!!!")
                     cm.goForward()
-                    client.sendall(cm.getOrientation())
+                    client.sendall(str(cm.getOrientation()).encode())
                 if  b'S' in data:
                     cm.goBackward()
-                    client.sendall(cm.getOrientation())
+                    client.sendall(str(cm.getOrientation()).encode())
                 if  b'A' in data:
                     cm.goLeft()
-                    client.sendall(cm.getOrientation())
+                    client.sendall(str(cm.getOrientation()).encode())
                 if  b'D' in data:
                     cm.goRight()
-                    client.sendall(cm.getOrientation())
+                    client.sendall(str(cm.getOrientation()).encode())
                 if b'U' in data:
                     USdata = fc.get_distance_at(0)
                     print(type(USdata))
