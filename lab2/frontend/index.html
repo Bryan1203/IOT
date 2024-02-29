@@ -1,0 +1,36 @@
+
+<html>
+    <script src ="index.js"></script>
+
+  <body>
+    <table>
+        <tr>
+          <td></td>
+          <td><button class="btn btn-success" onclick="toServer('W','orientation'); toServer('U','distance'); toServer('V','battery')">Forward</button></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><button class="btn btn-success" onclick="toServer('A','orientation'); toServer('U','distance'); toServer('V','battery')">Left</button></td>
+          <td></td>
+          <td><button class="btn btn-success" onclick="toServer('D','orientation'); toServer('U','distance'); toServer('V','battery')">Right</button></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><button class="btn btn-success" onclick="toServer('S','orientation'); toServer('U','distance'); toServer('V','battery')">Backward</button></td>
+          <td></td>
+        </tr>
+      </table>
+    
+      <div id="display">
+        <p>Orientation: <span id="orientation">0</span>degree</p>
+        <p>Distance from Obstacle: <span id="distance">0</span> cm</p>
+        <p>Battery Volatage: <span id="battery">0</span> V</p>
+      </div>
+
+
+    <br>
+    <span id="greet"></span>
+    <br>
+    <span id="greet_from_server"></span>
+  </body>
+</html>
