@@ -38,7 +38,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     #print(type(struct.pack('f',USdata)))
                     client.sendall(str(USdata).encode())
                 if b'V' in data:
-                    client.sendall(str(fc.power_read).encode())
+                    client.sendall(str(fc.power_read()).encode())
 
 
     except: 
