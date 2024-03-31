@@ -13,8 +13,13 @@ def swap_directions(peripheral):
     char = service.getCharacteristics(char_uuid)[0]
 
     while True:
+        value = char.read().decode()
+        print(value)
         char.write(bytes("Right", "utf-8"))
         time.sleep(3)
+
+        value = char.read().decode()
+        print(value)
         char.write(bytes("Left", "utf-8"))
         time.sleep(3)
 
