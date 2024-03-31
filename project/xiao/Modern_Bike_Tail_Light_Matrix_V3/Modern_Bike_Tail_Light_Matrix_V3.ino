@@ -1088,79 +1088,78 @@ FastLED.show();
 
 void LeftBlinker()
 {
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(LeftArrow_Frame1[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(LeftArrow_Frame1[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(LeftArrow_Frame2[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(LeftArrow_Frame2[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(LeftArrow_Frame3[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(LeftArrow_Frame3[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(LeftArrow_Frame4[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(LeftArrow_Frame4[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(LeftArrow_Frame5[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(LeftArrow_Frame5[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(LeftArrow_Frame6[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(LeftArrow_Frame6[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(LeftArrow_Frame7[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(LeftArrow_Frame7[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(LeftArrow_Frame8[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(LeftArrow_Frame8[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 
-FastLED.clear();
-for(int i = 0; i < NUM_LEDS; i++) 
-  {
-  leds[i] = pgm_read_dword(&(Blank[i]));  // Read array from Flash
-  }
-FastLED.show();
-delay(BlinkerSpeed);
+    FastLED.clear();
+    for(int i = 0; i < NUM_LEDS; i++) 
+    {
+        leds[i] = pgm_read_dword(&(Blank[i]));  // Read array from Flash
+    }
+    FastLED.show();
+    delay(BlinkerSpeed);
 }
-
 
 void RightBlinker()
 {

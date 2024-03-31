@@ -201,6 +201,10 @@ TRAIN,train/img-367_jpg.rf.299c5300a46524bfd3b2ae5e2a7398e8.jpg,pothole,149,80,,
 TRAIN,train/img-203_jpg.rf.29fcf9b56cd28acd7b8f97d171463785.jpg,pothole,184,295,,,424,402,,
 TRAIN,train/img-203_jpg.rf.29fcf9b56cd28acd7b8f97d171463785.jpg,pothole,618,301,,,683,365,,
 TRAIN,train/img-203_jpg.rf.29fcf9b56cd28acd7b8f97d171463785.jpg,pothole,396,230,,,597,324,,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 108e63852ae041aec761e08a2335c45fd69beb02
 TRAIN,train/img-450_jpg.rf.2a5241c5070556dedad85c9642d81858.jpg,pothole,90,81,,,313,167,,
 TRAIN,train/img-451_jpg.rf.2a8100252c943091f22453f4d7793a28.jpg,pothole,328,209,,,371,237,,
 TRAIN,train/img-451_jpg.rf.2a8100252c943091f22453f4d7793a28.jpg,pothole,214,165,,,321,236,,
@@ -423,6 +427,10 @@ TRAIN,train/img-585_jpg.rf.5affd0b2859d074e9e52f8540e31ce8d.jpg,pothole,0,197,,,
 TRAIN,train/img-59_jpg.rf.5b0be5064b3641271cd16f2fc35f840f.jpg,pothole,217,236,,,521,410,,
 TRAIN,train/img-59_jpg.rf.5b0be5064b3641271cd16f2fc35f840f.jpg,pothole,248,455,,,425,566,,
 TRAIN,train/img-509_jpg.rf.5bcf3d06847c789c6ffddd4d68666c6e.jpg,pothole,228,184,,,332,299,,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 108e63852ae041aec761e08a2335c45fd69beb02
 TRAIN,train/img-509_jpg.rf.5bcf3d06847c789c6ffddd4d68666c6e.jpg,pothole,332,158,,,450,234,,
 TRAIN,train/img-509_jpg.rf.5bcf3d06847c789c6ffddd4d68666c6e.jpg,pothole,481,225,,,519,253,,
 TRAIN,train/img-509_jpg.rf.5bcf3d06847c789c6ffddd4d68666c6e.jpg,pothole,302,89,,,370,118,,
@@ -1232,6 +1240,7 @@ TRAIN,train/img-129_jpg.rf.fbd5c4841019062274b4e9d1daeab4c3.jpg,pothole,328,377,
 TRAIN,train/img-325_jpg.rf.fc14997c5d5d229bcb148997947b64b5.jpg,pothole,91,127,,,134,148,,
 TRAIN,train/img-325_jpg.rf.fc14997c5d5d229bcb148997947b64b5.jpg,pothole,154,73,,,251,114,,
 TRAIN,train/img-325_jpg.rf.fc14997c5d5d229bcb148997947b64b5.jpg,pothole,324,58,,,374,73,,
+<<<<<<< HEAD
 VALID,valid/img-166_jpg.rf.050636db204eec127218fd258a822c29.jpg,pothole,249,273,,,467,425,,
 VALID,valid/img-166_jpg.rf.050636db204eec127218fd258a822c29.jpg,pothole,63,304,,,118,357,,
 VALID,valid/img-25_jpg.rf.06ba36f4b3e07cd7684b84722d00770a.jpg,pothole,214,256,,,596,480,,
@@ -1562,6 +1571,8 @@ VALID,valid/img-20_jpg.rf.fe0915e38abca9ba6523c4a4fd8dc779.jpg,pothole,274,303,,
 VALID,valid/img-154_jpg.rf.fbdaac9fa48b69a15abd7475dad671da.jpg,pothole,93,241,,,538,641,,
 VALID,valid/img-147_jpg.rf.fddcc7b6bec7550eb93fc7f4969e832e.jpg,pothole,311,298,,,409,417,,
 VALID,valid/img-147_jpg.rf.fddcc7b6bec7550eb93fc7f4969e832e.jpg,pothole,412,219,,,478,277,,
+=======
+>>>>>>> 108e63852ae041aec761e08a2335c45fd69beb02
 TRAIN,train/img-325_jpg.rf.fc14997c5d5d229bcb148997947b64b5.jpg,pothole,305,77,,,352,102,,
 TRAIN,train/img-325_jpg.rf.fc14997c5d5d229bcb148997947b64b5.jpg,pothole,334,113,,,374,135,,
 TRAIN,train/img-325_jpg.rf.fc14997c5d5d229bcb148997947b64b5.jpg,pothole,421,191,,,530,272,,
@@ -1583,6 +1594,7 @@ TRAIN,train/img-124_jpg.rf.fdc89fc9a29a16b57ad54dd3c63e7952.jpg,pothole,236,0,,,
 TRAIN,train/img-156_jpg.rf.ff820d5c1ff5fc1a1fc27fa5647cc146.jpg,pothole,203,254,,,451,424,,
 TRAIN,train/img-156_jpg.rf.ff820d5c1ff5fc1a1fc27fa5647cc146.jpg,pothole,447,144,,,572,192,,
 TRAIN,train/img-425_jpg.rf.ff4c598bfc259fbbb8f8d0e3a6eff1fb.jpg,pothole,88,200,,,222,249,,
+<<<<<<< HEAD
 TRAIN,train/img-425_jpg.rf.ff4c598bfc259fbbb8f8d0e3a6eff1fb.jpg,pothole,229,164,,,385,194,,
 TEST,test/img-398_jpg.rf.0c484369fdb23fdec1b9250477fc5d1d.jpg,pothole,30,39,,,606,299,,
 TEST,test/img-72_jpg.rf.02fb39f41fc685d8b616b0751976a8a3.jpg,pothole,259,286,,,492,432,,
@@ -1738,3 +1750,6 @@ TEST,test/img-195_jpg.rf.f77a8f4d432a9a89235168ff8e09a650.jpg,pothole,116,146,,,
 TEST,test/img-195_jpg.rf.f77a8f4d432a9a89235168ff8e09a650.jpg,pothole,181,265,,,436,480,,
 TEST,test/img-576_jpg.rf.f6cd32a51b0c518b58ff750ecab687d1.jpg,pothole,3,140,,,393,263,,
 TEST,test/img-576_jpg.rf.f6cd32a51b0c518b58ff750ecab687d1.jpg,pothole,197,110,,,282,134,,
+=======
+TRAIN,train/img-425_jpg.rf.ff4c598bfc259fbbb8f8d0e3a6eff1fb.jpg,pothole,229,164,,,385,194,,
+>>>>>>> 108e63852ae041aec761e08a2335c45fd69beb02
