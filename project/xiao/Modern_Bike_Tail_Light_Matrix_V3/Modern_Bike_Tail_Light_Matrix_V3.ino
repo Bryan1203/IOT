@@ -8,7 +8,7 @@
 #include <FastLED.h>
 #include <EEPROM.h>
 
-#define LED_PIN 7 //LED Strip Signal Connection 
+#define LED_PIN 44 //LED Strip Signal Connection 
 #define ParkSignal 3 //Park Signal Connection
 #define BrakeSignal 5 //Brake Signal Connection
 #define LeftSignal 7 //Left Blinker Signal Connection
