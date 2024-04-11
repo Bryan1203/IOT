@@ -16,10 +16,11 @@ region_name = 'us-east-2'
 #Path to the dataset, modify this
 data_path = "/Users/sahiththummalapally/Downloads/data2/vehicle{}.csv"
 
+
 #Path to your certificates, modify this
 
-certificate_formatter = "/Users/sahiththummalapally/Downloads/certificates/device_{}/device_{}.certificate.pem"
-key_formatter = "/Users/sahiththummalapally/Downloads/certificates/device_{}/device_{}.private.pem"
+certificate_formatter = "/Users/sahiththummalapally/Downloads/Car/f74fc04c99211f7ffb5f1cc3a2e0043289669a1d5c9fe19a81dc5d7f7b28e2cc-certificate.pem.crt"
+key_formatter = "/Users/sahiththummalapally/Downloads/Car/f74fc04c99211f7ffb5f1cc3a2e0043289669a1d5c9fe19a81dc5d7f7b28e2cc-private.pem.key"
 
 
 # Create an IoT client
@@ -90,7 +91,10 @@ while True:
     x = input()
     if x == "s":
         for i,c in enumerate(clients):
-            c.publish()
+            json_str = (data[i]).to_json(orient='records')
+            c.publish(json_str)
+            
+
 
     elif x == "d":
         for c in clients:
