@@ -14,13 +14,13 @@ device_end = 1
 
 region_name = 'us-east-2'
 #Path to the dataset, modify this
-data_path = "/Users/sahiththummalapally/Downloads/data2/vehicle{}.csv"
+data_path = r"data2\vehicle1.csv"
 
 
 #Path to your certificates, modify this
 
-certificate_formatter = "/Users/sahiththummalapally/Downloads/Car/f74fc04c99211f7ffb5f1cc3a2e0043289669a1d5c9fe19a81dc5d7f7b28e2cc-certificate.pem.crt"
-key_formatter = "/Users/sahiththummalapally/Downloads/Car/f74fc04c99211f7ffb5f1cc3a2e0043289669a1d5c9fe19a81dc5d7f7b28e2cc-private.pem.key"
+certificate_formatter = r"C:\Users\Bryan\Desktop\CS437\IOT\lab4\Car\f74fc04c99211f7ffb5f1cc3a2e0043289669a1d5c9fe19a81dc5d7f7b28e2cc-certificate.pem.crt"
+key_formatter = r"C:\Users\Bryan\Desktop\CS437\IOT\lab4\Car\f74fc04c99211f7ffb5f1cc3a2e0043289669a1d5c9fe19a81dc5d7f7b28e2cc-private.pem.key"
 
 
 # Create an IoT client
@@ -38,7 +38,7 @@ class MQTTClient:
         self.client = AWSIoTMQTTClient(self.device_id)
         #TODO 2: modify your broker address
         self.client.configureEndpoint("a2l7dk2u7na085-ats.iot.us-east-2.amazonaws.com", 8883)
-        self.client.configureCredentials("/Users/sahiththummalapally/Downloads/AmazonRootCA1.pem", key, cert)
+        self.client.configureCredentials("AmazonRootCA1.pem", key, cert)
         self.client.configureOfflinePublishQueueing(-1)  # Infinite offline Publish queueing
         self.client.configureDrainingFrequency(2)  # Draining: 2 Hz
         self.client.configureConnectDisconnectTimeout(10)  # 10 sec
@@ -65,7 +65,7 @@ class MQTTClient:
 
     def publish(self, Payload="payload"):
         #TODO4: fill in this function for your publish
-        self.client.subscribeAsync("myTopic", 0, ackCallback=self.customSubackCallback)
+        self.client.subscribeAsync("iot/Vehicle", 0, ackCallback=self.customSubackCallback)
         
         self.client.publishAsync("myTopic", Payload, 0, ackCallback=self.customPubackCallback)
 
@@ -85,14 +85,18 @@ for thing in things:
     client.client.connect()
     clients.append(client)
  
-
+counter = 0
 while True:
     print("send now?")
     x = input()
     if x == "s":
-        for i,c in enumerate(clients):
-            json_str = (data[i]).to_json(orient='records')
-            c.publish(json_str)
+        
+        #json_str = (data[0].loc[counter]).to_json(orient='records')
+        result = (data[0].iloc[counter].to_dict())
+        json_output = json.dumps(result, indent=4)
+        print(result)
+        clients[0].publish(json_output)
+        counter+=1
             
 
 
