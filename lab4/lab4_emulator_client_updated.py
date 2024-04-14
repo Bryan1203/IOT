@@ -109,8 +109,3 @@ while True:
         print("wrong key pressed")
 
     time.sleep(3)
-
-
-
-
-

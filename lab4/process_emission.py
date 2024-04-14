@@ -1,34 +1,48 @@
 import json
 import logging
 import sys
-
 import greengrasssdk
 
-# Logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-data_path = "/Users/sahiththummalapally/Downloads/data2/vehicle1.csv"
-# SDK Client
+
 client = greengrasssdk.client("iot-data")
 
+global_max_CO2 = 0.0
 
 def lambda_handler(event, context):
-    # TODO1: Get your data
-    # TODO2: Calculate max CO2 emission
-    maxCounter = 0.0
-    for record in event:
-        CO2_val = float(record['vehicle_CO2'])
-        vehicle_stat = record['vehicle_id'] 
+    global global_max_CO2
 
-        if CO2_val > maxCounter:
-            maxCounter = CO2_val
-    
-    
-    # TODO3: Return the result
-    client.publish(
-        topic="iot/Vehicle_" + vehicle_stat,
-        queueFullPolicy="AllOrException",
-        payload=json.dumps({"max_CO2": maxCounter, }),
-    )
+   
+    try:
+      record = json.loads(event)
+      CO2_val = float(record['vehicle_CO2'])
+      vehicle_id = record['vehicle_id']
 
-    return
+      if CO2_val > global_max_CO2:
+          global_max_CO2 = CO2_val
+
+      client.publish(
+          topic="iot/Vehicle_" + vehicle_id,
+          queueFullPolicy="AllOrException",
+          payload=json.dumps({"max_CO2": global_max_CO2}),
+      )
+    
+      return {"max_CO2": global_max_CO2}
+
+    except json.JSONDecodeError as e:
+        logger.error("Decoding JSON has failed: %s", str(e))
+        return {"error": "Decoding JSON has failed"}
+
+    except KeyError as e:
+        logger.error("Missing expected key in JSON: %s", str(e))
+        return {"error": "Missing expected key in JSON"}
+
+    except Exception as e:
+        logger.error("An unexpected error occurred: %s", str(e))
+        return {"error": "An unexpected error occurred"}
+
+
+context = {}
+result = lambda_handler(event_dict, context)
+print(result)
