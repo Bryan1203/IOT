@@ -1,93 +1,163 @@
-import cv2
+# Lint as: python3
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Functions to work with detection models."""
 
-from PIL import Image
+import collections
+import numpy as np
 
-model_path = 'model.tflite'
-
-# Load the labels into a list
-classes = ['???'] * model.model_spec.config.num_classes
-label_map = model.model_spec.config.label_map
-for label_id, label_name in label_map.as_dict().items():
-  classes[label_id-1] = label_name
-
-# Define a list of colors for visualization
-COLORS = np.random.randint(0, 255, size=(len(classes), 3), dtype=np.uint8)
-
-def preprocess_image(image_path, input_size):
-  """Preprocess the input image to feed to the TFLite model"""
-  img = tf.io.read_file(image_path)
-  img = tf.io.decode_image(img, channels=3)
-  img = tf.image.convert_image_dtype(img, tf.uint8)
-  original_image = img
-  resized_img = tf.image.resize(img, input_size)
-  resized_img = resized_img[tf.newaxis, :]
-  resized_img = tf.cast(resized_img, dtype=tf.uint8)
-  return resized_img, original_image
+Object = collections.namedtuple('Object', ['id', 'score', 'bbox'])
 
 
-def detect_objects(interpreter, image, threshold):
-  """Returns a list of detection results, each a dictionary of object info."""
+class BBox(collections.namedtuple('BBox', ['xmin', 'ymin', 'xmax', 'ymax'])):
+  """Bounding box.
 
-  signature_fn = interpreter.get_signature_runner()
+  Represents a rectangle which sides are either vertical or horizontal, parallel
+  to the x or y axis.
+  """
+  __slots__ = ()
 
-  # Feed the input image to the model
-  output = signature_fn(images=image)
+  @property
+  def width(self):
+    """Returns bounding box width."""
+    return self.xmax - self.xmin
 
-  # Get all outputs from the model
-  count = int(np.squeeze(output['output_0']))
-  scores = np.squeeze(output['output_1'])
-  classes = np.squeeze(output['output_2'])
-  boxes = np.squeeze(output['output_3'])
+  @property
+  def height(self):
+    """Returns bounding box height."""
+    return self.ymax - self.ymin
 
-  results = []
-  for i in range(count):
-    if scores[i] >= threshold:
-      result = {
-        'bounding_box': boxes[i],
-        'class_id': classes[i],
-        'score': scores[i]
-      }
-      results.append(result)
-  return results
+  @property
+  def area(self):
+    """Returns bound box area."""
+    return self.width * self.height
+
+  @property
+  def valid(self):
+    """Returns whether bounding box is valid or not.
+
+    Valid bounding box has xmin <= xmax and ymin <= ymax which is equivalent to
+    width >= 0 and height >= 0.
+    """
+    return self.width >= 0 and self.height >= 0
+
+  def scale(self, sx, sy):
+    """Returns scaled bounding box."""
+    return BBox(xmin=sx * self.xmin,
+                ymin=sy * self.ymin,
+                xmax=sx * self.xmax,
+                ymax=sy * self.ymax)
+
+  def translate(self, dx, dy):
+    """Returns translated bounding box."""
+    return BBox(xmin=dx + self.xmin,
+                ymin=dy + self.ymin,
+                xmax=dx + self.xmax,
+                ymax=dy + self.ymax)
+
+  def map(self, f):
+    """Returns bounding box modified by applying f for each coordinate."""
+    return BBox(xmin=f(self.xmin),
+                ymin=f(self.ymin),
+                xmax=f(self.xmax),
+                ymax=f(self.ymax))
+
+  @staticmethod
+  def intersect(a, b):
+    """Returns the intersection of two bounding boxes (may be invalid)."""
+    return BBox(xmin=max(a.xmin, b.xmin),
+                ymin=max(a.ymin, b.ymin),
+                xmax=min(a.xmax, b.xmax),
+                ymax=min(a.ymax, b.ymax))
+
+  @staticmethod
+  def union(a, b):
+    """Returns the union of two bounding boxes (always valid)."""
+    return BBox(xmin=min(a.xmin, b.xmin),
+                ymin=min(a.ymin, b.ymin),
+                xmax=max(a.xmax, b.xmax),
+                ymax=max(a.ymax, b.ymax))
+
+  @staticmethod
+  def iou(a, b):
+    """Returns intersection-over-union value."""
+    intersection = BBox.intersect(a, b)
+    if not intersection.valid:
+      return 0.0
+    area = intersection.area
+    return area / (a.area + b.area - area)
 
 
-def run_odt_and_draw_results(image_path, interpreter, threshold=0.5):
-  """Run object detection on the input image and draw the detection results"""
-  # Load the input shape required by the model
-  _, input_height, input_width, _ = interpreter.get_input_details()[0]['shape']
+def input_size(interpreter):
+  """Returns input image size as (width, height) tuple."""
+  _, height, width, _ = interpreter.get_input_details()[0]['shape']
+  return width, height
 
-  # Load the input image and preprocess it
-  preprocessed_image, original_image = preprocess_image(
-      image_path,
-      (input_height, input_width)
-    )
 
-  # Run object detection on the input image
-  results = detect_objects(interpreter, preprocessed_image, threshold=threshold)
+def input_tensor(interpreter):
+  """Returns input tensor view as numpy array of shape (height, width, 3)."""
+  tensor_index = interpreter.get_input_details()[0]['index']
+  return interpreter.tensor(tensor_index)()[0]
 
-  # Plot the detection results on the input image
-  original_image_np = original_image.numpy().astype(np.uint8)
-  for obj in results:
-    # Convert the object bounding box from relative coordinates to absolute
-    # coordinates based on the original image resolution
-    ymin, xmin, ymax, xmax = obj['bounding_box']
-    xmin = int(xmin * original_image_np.shape[1])
-    xmax = int(xmax * original_image_np.shape[1])
-    ymin = int(ymin * original_image_np.shape[0])
-    ymax = int(ymax * original_image_np.shape[0])
 
-    # Find the class index of the current object
-    class_id = int(obj['class_id'])
+def set_input(interpreter, size, resize):
+  """Copies a resized and properly zero-padded image to the input tensor.
 
-    # Draw the bounding box and label on the image
-    color = [int(c) for c in COLORS[class_id]]
-    cv2.rectangle(original_image_np, (xmin, ymin), (xmax, ymax), color, 2)
-    # Make adjustments to make the label visible for all objects
-    y = ymin - 15 if ymin - 15 > 15 else ymin + 15
-    label = "{}: {:.0f}%".format(classes[class_id], obj['score'] * 100)
-    cv2.putText(original_image_np, label, (xmin, y),
-        cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+  Args:
+    interpreter: Interpreter object.
+    size: original image size as (width, height) tuple.
+    resize: a function that takes a (width, height) tuple, and returns an RGB
+      image resized to those dimensions.
+  Returns:
+    Actual resize ratio, which should be passed to `get_output` function.
+  """
+  width, height = input_size(interpreter)
+  w, h = size
+  scale = min(width / w, height / h)
+  w, h = int(w * scale), int(h * scale)
+  tensor = input_tensor(interpreter)
+  tensor.fill(0)  # padding
+  _, _, channel = tensor.shape
+  tensor[:h, :w] = np.reshape(resize((w, h)), (h, w, channel))
+  return scale, scale
 
-  # Return the final image
-  original_uint8 = original_image_np.astype(np.uint8)
-  return original_uint8
+
+def output_tensor(interpreter, i):
+  """Returns output tensor view."""
+  tensor = interpreter.tensor(interpreter.get_output_details()[i]['index'])()
+  return np.squeeze(tensor)
+
+
+def get_output(interpreter, score_threshold, image_scale=(1.0, 1.0)):
+  """Returns list of detected objects."""
+  boxes = output_tensor(interpreter, 0)
+  class_ids = output_tensor(interpreter, 1)
+  scores = output_tensor(interpreter, 2)
+  count = int(output_tensor(interpreter, 3))
+
+  width, height = input_size(interpreter)
+  image_scale_x, image_scale_y = image_scale
+  sx, sy = width / image_scale_x, height / image_scale_y
+
+  def make(i):
+    ymin, xmin, ymax, xmax = boxes[i]
+    return Object(
+        id=int(class_ids[i]),
+        score=float(scores[i]),
+        bbox=BBox(xmin=xmin,
+                  ymin=ymin,
+                  xmax=xmax,
+                  ymax=ymax).scale(sx, sy).map(int))
+
+  return [make(i) for i in range(count) if scores[i] >= score_threshold]
