@@ -1,0 +1,13 @@
+Edge TPU Compiler version 16.0.384591198
+Input: detect.tflite
+Output: detect_edgetpu.tflite
+
+Operator                       Count      Status
+
+CONV_2D                        55         Operation is working on an unsupported data type
+LOGISTIC                       1          Operation is working on an unsupported data type
+CUSTOM                         1          Operation is working on an unsupported data type
+ADD                            10         Operation is working on an unsupported data type
+RESHAPE                        13         Operation is working on an unsupported data type
+CONCATENATION                  2          Operation is working on an unsupported data type
+DEPTHWISE_CONV_2D              17         Operation is working on an unsupported data type
