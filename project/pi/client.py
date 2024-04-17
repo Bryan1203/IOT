@@ -42,7 +42,7 @@ def terminal_input():
 
 
 def signal_handler(sig, frame):
-    send_message("Stop")
+    send_message("Disconnected")
     peripheral.disconnect()
     exit(0)
 
