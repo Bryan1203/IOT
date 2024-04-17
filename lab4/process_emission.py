@@ -42,7 +42,3 @@ def lambda_handler(event, context):
         logger.error("An unexpected error occurred: %s", str(e))
         return {"error": "An unexpected error occurred"}
 
-
-context = {}
-result = lambda_handler(event_dict, context)
-print(result)
