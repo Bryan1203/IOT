@@ -2,31 +2,40 @@ from bluepy.btle import Peripheral
 import time
 import threading
 import queue
+import signal
 
+# IDs
 device_mac = 'DC:54:75:D8:4B:D9'
 service_uuid = '4fafc201-1fb5-459e-8fcc-c5c9c331914b'
 char_uuid = 'beb5483e-36e1-4688-b7f5-ea07361b26a8'
 
+# globals
+peripheral = Peripheral(device_mac)
+service = peripheral.getServiceByUUID(service_uuid)
+char = service.getCharacteristics(char_uuid)[0]
 
-def swap_directions(peripheral):
-    service = peripheral.getServiceByUUID(service_uuid)
-    char = service.getCharacteristics(char_uuid)[0]
 
+def send_message(mes):
+    char.write(bytes(mes, "utf-8"))
+
+
+def get_message():
+    return char.read().decode()
+
+
+def swap_directions():
     while True:
-        value = char.read().decode()
-        print(value)
-        char.write(bytes("Right", "utf-8"))
+        print("Value: ", get_message())
+        send_message("Right")
         time.sleep(3)
 
-        value = char.read().decode()
-        print(value)
-        char.write(bytes("Left", "utf-8"))
+        print("Value: ", get_message())
+        send_message("Left")
         time.sleep(3)
 
 
 def main():
-    with Peripheral(device_mac) as p:
-        swap_directions(p)
+    swap_directions()
 
 
 if __name__ == "__main__":

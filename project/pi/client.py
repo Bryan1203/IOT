@@ -4,7 +4,6 @@ import threading
 import queue
 import signal
 
-
 # IDs
 device_mac = 'DC:54:75:D8:4B:D9'
 service_uuid = '4fafc201-1fb5-459e-8fcc-c5c9c331914b'
