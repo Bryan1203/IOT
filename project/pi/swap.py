@@ -34,6 +34,15 @@ def swap_directions():
         time.sleep(3)
 
 
+def signal_handler(sig, frame):
+    send_message("Stop")
+    peripheral.disconnect()
+    exit(0)
+
+
+signal.signal(signal.SIGINT, signal_handler)
+
+
 def main():
     swap_directions()
 
