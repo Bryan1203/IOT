@@ -29,7 +29,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
 
 // #include <EEPROM.h>
 
-#define LED_PIN 44
+#define LED_PIN 9
 #define NUM_LEDS 64
 #define BRIGHTNESS 50  
 
