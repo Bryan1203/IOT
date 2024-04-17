@@ -726,10 +726,10 @@ const long* ParkAnimation_Frames[] PROGMEM = {
 };
 
 const long* Hazard_Frames[] PROGMEM = {
-  Hazard_Frame1,
+  // Hazard_Frame1,
   Hazard_Frame2,
-  // Hazard_Frame3,
-  // Hazard_Frame4
+  Hazard_Frame3,
+  Hazard_Frame4
 };
 
 
@@ -743,7 +743,7 @@ void runRightBlinker() {
 
 void runLeftBlinker()
 {
-  for(int frame = 0; frame < sizeof(RightArrow_Frames)/sizeof(RightArrow_Frames[0]); frame++) {
+  for(int frame = 0; frame < sizeof(LeftArrow_Frames)/sizeof(LeftArrow_Frames[0]); frame++) {
     displayFrame(LeftArrow_Frames[frame]);
   }
 
@@ -752,7 +752,7 @@ void runLeftBlinker()
 
 void runParkAnimation()
 {
-  for(int frame = 0; frame < sizeof(RightArrow_Frames)/sizeof(RightArrow_Frames[0]); frame++) {
+  for(int frame = 0; frame < sizeof(ParkAnimation_Frames)/sizeof(ParkAnimation_Frames[0]); frame++) {
     displayFrame(ParkAnimation_Frames[frame]);
   }
 
@@ -761,7 +761,7 @@ void runParkAnimation()
 
 void runHazardAnimation()
 {
-  for(int frame = 0; frame < sizeof(RightArrow_Frames)/sizeof(RightArrow_Frames[0]); frame++) {
+  for(int frame = 0; frame < sizeof(Hazard_Frames)/sizeof(Hazard_Frames[0]); frame++) {
     displayFrame(Hazard_Frames[frame]);
   }
 
