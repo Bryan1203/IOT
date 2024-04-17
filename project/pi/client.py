@@ -1,4 +1,4 @@
-from bluepy.btle import Peripheral
+from bluepy.btle import Peripheral, BTLEException
 import time
 import threading
 import queue
@@ -9,8 +9,20 @@ device_mac = 'DC:54:75:D8:4B:D9'
 service_uuid = '4fafc201-1fb5-459e-8fcc-c5c9c331914b'
 char_uuid = 'beb5483e-36e1-4688-b7f5-ea07361b26a8'
 
+
+def connect_to_peripheral():
+    while True:
+        try:
+            peripheral = Peripheral(device_mac)
+            print("Connected to peripheral.")
+            return peripheral
+        except BTLEException as e:
+            print("Failed to connect to peripheral. Retrying in 2 seconds...")
+            time.sleep(1)
+
+
 # globals
-peripheral = Peripheral(device_mac)
+peripheral = connect_to_peripheral()
 service = peripheral.getServiceByUUID(service_uuid)
 char = service.getCharacteristics(char_uuid)[0]
 
