@@ -681,41 +681,6 @@ const long KnightRider_Frame14[] PROGMEM =
 
 const long a = 0x4b0000;
 const long _ = 0x000000;
-// const long RightDownArrow[] PROGMEM =
-// {
-// a, a, _, _, _, _, a, a, //0 flip
-// a, a, _, _, _, a, a, _, //1
-// a, a, _, _, a, a, _, _, //2 flip
-// a, a, _, a, a, _, _, _, //3
-// a, a, a, a, _, _, _, _, //4 flip
-// a, a, a, _, _, _, _, _, //5
-// a, a, a, a, a, a, a, a, //6 flip
-// a, a, a, a, a, a, a, a, //7
-// };
-
-// const long RightDownArrow1[] PROGMEM =
-// {
-// a, a, _, _, _, _, _, a, //0
-// a, a, _, _, _, _, a, _, //1
-// a, a, _, _, _, a, _, _, //2
-// a, a, _, _, a, _, _, _, //3
-// a, a, _, a, _, _, _, _, //4
-// a, a, a, _, _, _, _, _, //5
-// a, a, a, a, a, a, a, a, //6
-// a, a, a, a, a, a, a, a, //7
-// };
-
-// const long RightDownArrow2[] PROGMEM =
-// {
-// a, a, _, _, _, _, _, a, //0
-// a, a, _, _, _, _, a, a, //1
-// a, a, _, _, _, a, a, _, //2
-// a, a, _, _, a, a, _, _, //3
-// a, a, _, a, a, _, _, _, //4
-// a, a, a, a, _, _, _, _, //5
-// a, a, a, a, a, a, a, a, //6
-// a, a, a, a, a, a, a, a, //7
-// };
 
 const long RightDownArrow[] PROGMEM =
 {
@@ -739,6 +704,20 @@ a, a, _, a, a, a, _, _, //4
 a, a, _, _, a, a, a, _, //5
 a, a, _, _, _, a, a, a, //6 flip
 a, a, _, _, _, _, a, a, //7
+};
+
+const long o = 0x4b0000;
+
+const long Triangle[] PROGMEM =
+{
+o, o, o, o, o, _, _, _, //0
+o, o, o, o, o, o, _, _, //1
+o, o, _, _, _, o, o, _, //2
+o, o, _, _, _, _, o, o, //3
+o, o, _, _, _, _, o, o, //4
+o, o, _, _, _, o, o, _, //5
+o, o, o, o, o, o, _, _, //6
+o, o, o, o, o, _, _, _, //7
 };
 
 long* flipEvenRows(const long frame[]) {
@@ -904,6 +883,11 @@ void loop() {
     }
 
     else if (valueStr == "rightdown" || valueStr == "rd") {
+      long* newFrame = flipEvenRows(Triangle);
+      displayFrame(newFrame); 
+      displayFrame(Blank);
+      displayFrame(newFrame); 
+      delete[] newFrame;
       long* newFrame = flipEvenRows(RightDownArrow);
       displayFrame(newFrame); 
       displayFrame(Blank);
@@ -912,7 +896,20 @@ void loop() {
     }
 
     else if (valueStr == "leftdown" || valueStr == "ld") {
+      long* newFrame = flipEvenRows(Triangle);
+      displayFrame(newFrame); 
+      displayFrame(Blank);
+      displayFrame(newFrame); 
+      delete[] newFrame;
       long* newFrame = flipEvenRows(LeftDownArrow);
+      displayFrame(newFrame); 
+      displayFrame(Blank);
+      displayFrame(newFrame); 
+      delete[] newFrame;
+    }
+
+    else if (valueStr == "triangle"){
+      long* newFrame = flipEvenRows(Triangle);
       displayFrame(newFrame); 
       displayFrame(Blank);
       displayFrame(newFrame); 
