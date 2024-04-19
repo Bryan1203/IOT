@@ -14,6 +14,7 @@ def connect_to_peripheral():
     while True:
         print("hello")
         try:
+            print("hoi")
             peripheral = Peripheral(device_mac)
             print("Connected to peripheral.")
             return peripheral
@@ -66,6 +67,7 @@ def swap_directions():
 
 
 def terminal_input():
+    print("hi")
     while True:
         print("Value: ", get_message())
         user_input = input("Enter your message: ")
