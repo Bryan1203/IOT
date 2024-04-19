@@ -903,29 +903,18 @@ void loop() {
       runKnightRider();
     }
 
-    else if (valueStr == "rd") {
+    else if (valueStr == "rightdown" || valueStr == "rd") {
       long* newFrame = flipEvenRows(RightDownArrow);
+      displayFrame(newFrame); 
+      displayFrame(Blank);
       displayFrame(newFrame); 
       delete[] newFrame;
     }
-    // else if (valueStr == "rd1") {
-    //   long* newFrame = flipEvenRows(RightDownArrow1);
-    //   displayFrame(newFrame); 
-    //   delete[] newFrame;
-    // }
-    // else if (valueStr == "rd2") {
-    //   long* newFrame = flipEvenRows(RightDownArrow2);
-    //   displayFrame(newFrame); 
-    //   delete[] newFrame;
-    // }
-    // else if (valueStr == "rd3") {
-    //   long* newFrame = flipEvenRows(RightDownArrow3);
-    //   displayFrame(newFrame); 
-    //   delete[] newFrame;
-    // }
 
-    else if (valueStr == "ld") {
+    else if (valueStr == "leftdown" || valueStr == "ld") {
       long* newFrame = flipEvenRows(LeftDownArrow);
+      displayFrame(newFrame); 
+      displayFrame(Blank);
       displayFrame(newFrame); 
       delete[] newFrame;
     }

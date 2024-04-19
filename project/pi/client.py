@@ -18,7 +18,14 @@ def connect_to_peripheral():
             return peripheral
         except BTLEException as e:
             print("Failed to connect to peripheral. Retrying in 2 seconds...")
-            time.sleep(1)
+            time.sleep(2)
+
+
+def reconnect_peripheral():
+    # global peripheral, service, char
+    peripheral = connect_to_peripheral()
+    service = peripheral.getServiceByUUID(service_uuid)
+    char = service.getCharacteristics(char_uuid)[0]
 
 
 # globals
@@ -28,11 +35,21 @@ char = service.getCharacteristics(char_uuid)[0]
 
 
 def send_message(mes):
-    char.write(bytes(mes, "utf-8"))
+    try:
+        char.write(bytes(mes, "utf-8"))
+    except BTLEException:
+        print("Connection lost. Attempting to reconnect...")
+        reconnect_peripheral()
+        send_message(mes)
 
 
 def get_message():
-    return char.read().decode()
+    try:
+        return char.read().decode()
+    except BTLEException:
+        print("Connection lost. Attempting to reconnect...")
+        reconnect_peripheral()
+        return get_message()
 
 
 def swap_directions():
