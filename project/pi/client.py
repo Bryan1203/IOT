@@ -1,4 +1,4 @@
-from bluepy.btle import Peripheral, BTLEException
+from bluepy.btle import Peripheral, BTLEException, BTLEDisconnectError
 import time
 import threading
 import queue
@@ -16,7 +16,7 @@ def connect_to_peripheral():
             peripheral = Peripheral(device_mac)
             print("Connected to peripheral.")
             return peripheral
-        except BTLEException as e:
+        except (BTLEException, BTLEDisconnectError) as e:
             print("Failed to connect to peripheral. Retrying in 2 seconds...")
             time.sleep(2)
 
@@ -38,7 +38,7 @@ char = service.getCharacteristics(char_uuid)[0]
 def send_message(mes):
     try:
         char.write(bytes(mes, "utf-8"))
-    except BTLEException:
+    except (BTLEException, BTLEDisconnectError):
         print("Connection lost. Attempting to reconnect...")
         reconnect_peripheral()
         send_message(mes)
@@ -47,7 +47,7 @@ def send_message(mes):
 def get_message():
     try:
         return char.read().decode()
-    except BTLEException:
+    except (BTLEException, BTLEDisconnectError):
         print("Connection lost. Attempting to reconnect...")
         reconnect_peripheral()
         return get_message()
