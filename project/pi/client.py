@@ -23,6 +23,7 @@ def connect_to_peripheral():
 
 def reconnect_peripheral():
     # global peripheral, service, char
+    peripheral.disconnect()
     peripheral = connect_to_peripheral()
     service = peripheral.getServiceByUUID(service_uuid)
     char = service.getCharacteristics(char_uuid)[0]
