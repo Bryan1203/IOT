@@ -12,6 +12,7 @@ char_uuid = 'beb5483e-36e1-4688-b7f5-ea07361b26a8'
 
 def connect_to_peripheral():
     while True:
+        print("hello")
         try:
             peripheral = Peripheral(device_mac)
             print("Connected to peripheral.")
