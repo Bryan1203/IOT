@@ -24,6 +24,7 @@ import importlib.util
 from gtts import gTTS
 from playsound import playsound
 import os
+import taillight
 
 
 last_alert_time = 0  # Initialize the last alert time variable
@@ -199,6 +200,7 @@ while(video.isOpened()):
         side, ymin, xmin, ymax, xmax = closest_pothole
         # Trigger the alert
         alert_thread = threading.Thread(target=play_alert, args=(side,))
+        taillight_thread = threading.Thread(target=taillight.send_message, args=(right))
         alert_thread.start()
         last_alert_time = time.time()  # Update last alert time
     cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
