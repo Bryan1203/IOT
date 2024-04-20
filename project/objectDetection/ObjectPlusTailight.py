@@ -154,8 +154,8 @@ imH = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
 alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
 alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
-taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("right",))
-taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("left",))
+taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("Right",))
+taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("Left",))
 
 while(video.isOpened()):
     t1 = cv2.getTickCount()
