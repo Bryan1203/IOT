@@ -213,13 +213,16 @@ while(video.isOpened()):
         side, ymin, xmin, ymax, xmax = closest_pothole
         
         
+        
 
         # Trigger the alert
         if side == "Right" and not taillight_right_process.is_alive():
+            alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
             print("right side is called")
             alert_right_process.start()
             #taillight_right_process.start()
         elif side == "Left" and not taillight_left_process.is_alive():
+            alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
             print("left side is called")
             alert_left_process.start()
             #taillight_left_process.start()
