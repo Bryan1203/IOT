@@ -212,9 +212,11 @@ while(video.isOpened()):
         side, ymin, xmin, ymax, xmax = closest_pothole
         # Trigger the alert
         if side == "right":
+            print("right side is called")
             alert_right_process.start()
             taillight_right_process.start()
         elif side == "left":
+             print("left side is called")
             alert_left_process.start()
             taillight_left_process.start()
       
