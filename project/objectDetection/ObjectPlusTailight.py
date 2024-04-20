@@ -152,6 +152,11 @@ video = cv2.VideoCapture(VIDEO_PATH)
 imW = video.get(cv2.CAP_PROP_FRAME_WIDTH)
 imH = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
+alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
+alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
+taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("right",))
+taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("left",))
+
 while(video.isOpened()):
     t1 = cv2.getTickCount()
     ret, frame = video.read()
@@ -179,10 +184,6 @@ while(video.isOpened()):
 
     # Iterate through all detections to find the one with the largest bounding box area
 
-    alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
-    alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
-    taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("right",))
-    taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("left",))
 
     for i in range(len(scores)):
         if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
