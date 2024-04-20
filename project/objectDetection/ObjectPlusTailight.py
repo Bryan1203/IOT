@@ -176,6 +176,8 @@ while(video.isOpened()):
     max_area = 0  # Initialize the maximum area found
 
     # Iterate through all detections to find the one with the largest bounding box area
+    alert_process = multiprocessing.Process(target=play_alert, args=(side,))
+    taillight_process = multiprocessing.Process(target=taillight.send_message, args=("right", ))
     for i in range(len(scores)):
         if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
             ymin, xmin, ymax, xmax = [int(max(1, boxes[i][j] * imH)) if j % 2 == 0 else int(max(1, boxes[i][j] * imW)) for j in range(4)]
@@ -203,8 +205,8 @@ while(video.isOpened()):
         side, ymin, xmin, ymax, xmax = closest_pothole
         # Trigger the alert
 
-        alert_process = multiprocessing.Process(target=play_alert, args=(side,))
-        taillight_process = multiprocessing.Process(target=taillight.send_message, args=("right", ))
+        
+
         alert_process.start()
         taillight_process.start()
         last_alert_time = time.time()  # Update last alert time
