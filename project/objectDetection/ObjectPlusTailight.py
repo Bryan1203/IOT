@@ -204,13 +204,13 @@ while(video.isOpened()):
         # Trigger the alert
 
         alert_process = multiprocessing.Process(target=play_alert, args=(side,))
-        taillight_process = multiprocessing.Process(target=taillight.send_message, args=("right"))
+        taillight_process = multiprocessing.Process(target=taillight.send_message, args=("right", ))
         alert_process.start()
         taillight_process.start()
         last_alert_time = time.time()  # Update last alert time
     cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
     cv2.imshow('Object detector', frame)
-    
+
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1
