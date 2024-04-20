@@ -985,6 +985,10 @@ void loop() {
   if (pCharacteristic != nullptr) { // Check if pCharacteristic is initialized
     std::string value = pCharacteristic->getValue();
     String valueStr = String(value.c_str());
+    
+    if (Serial.available() > 0) {
+      valueStr = Serial.readString();
+    }
 
     if (valueStr == "right") {
       runRightBlinker(); 
@@ -1028,23 +1032,31 @@ void loop() {
 
     else if (valueStr == "rightdown" || valueStr == "rd") {
       
-      if(!hasPlayedRight)
+      if(!hasPlayedRight){
         for(int i = 0; i < BLINDER_COUNT; i++)
         {
           runRightDownBlinder();
           hasPlayedRight = true;
         }
-      
+      }
+      else{
+        displayFrame(Blank);
+      }
     }
 
     else if (valueStr == "leftdown" || valueStr == "ld") {
-      if(!hasPlayedRight)
+      if(!hasPlayedLeft){
+        Serial.println("inside if");
         for(int i = 0; i < BLINDER_COUNT; i++)
         {
+          Serial.println("inside loop");
           runLeftDownBlinder();
           hasPlayedLeft = true;
         }
-        
+      }
+      else{
+        displayFrame(Blank);
+      }        
     }
 
     else if (valueStr == "triangle"){
