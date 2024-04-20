@@ -218,11 +218,11 @@ while(video.isOpened()):
         if side == "Right" and not taillight_right_process.is_alive():
             print("right side is called")
             alert_right_process.start()
-            taillight_right_process.start()
+            #taillight_right_process.start()
         elif side == "Left" and not taillight_left_process.is_alive():
             print("left side is called")
             alert_left_process.start()
-            taillight_left_process.start()
+            #taillight_left_process.start()
       
         
         last_alert_time = time.time()  # Update last alert time
