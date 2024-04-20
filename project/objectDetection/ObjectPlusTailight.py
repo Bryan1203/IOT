@@ -25,10 +25,13 @@ from gtts import gTTS
 from playsound import playsound
 import os
 import taillight
+import multiprocessing
 
 
 last_alert_time = 0  # Initialize the last alert time variable
 alert_cooldown = 3  # Cooldown in seconds (adjust as needed)
+
+
 
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
@@ -55,12 +58,6 @@ min_conf_threshold = float(args.threshold)
 use_TPU = args.edgetpu
 frame_rate_calc = 1
 freq = cv2.getTickFrequency()
-
-
-def alert_side(side):
-    """Function to handle alerting for a specific side."""
-    play_alert(side)
-    taillight.send_message(side)
 
 def play_alert(side):
     global last_alert_time
@@ -159,8 +156,7 @@ while(video.isOpened()):
     if not ret:
         print('Reached the end of the video!')
         break
-
-    # Your existing code to convert the frame and perform detection
+    
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     frame_resized = cv2.resize(frame_rgb, (width, height))
     input_data = np.expand_dims(frame_resized, axis=0)
@@ -171,47 +167,50 @@ while(video.isOpened()):
     interpreter.set_tensor(input_details[0]['index'], input_data)
     interpreter.invoke()
 
-    # Your existing code to extract detection results
     boxes = interpreter.get_tensor(output_details[boxes_idx]['index'])[0]
     classes = interpreter.get_tensor(output_details[classes_idx]['index'])[0]
     scores = interpreter.get_tensor(output_details[scores_idx]['index'])[0]
 
     mid_x = imW // 2
     closest_pothole = None
-    max_area = 0
+    max_area = 0  # Initialize the maximum area found
 
-    # Your existing detection iteration logic
+    # Iterate through all detections to find the one with the largest bounding box area
     for i in range(len(scores)):
         if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
-            # Existing code to calculate positions and determine side
             ymin, xmin, ymax, xmax = [int(max(1, boxes[i][j] * imH)) if j % 2 == 0 else int(max(1, boxes[i][j] * imW)) for j in range(4)]
-            area = (xmax - xmin) * (ymax - ymin)
+            area = (xmax - xmin) * (ymax - ymin)  # Calculate area of the bounding box
             bbox_mid_x = (xmin + xmax) // 2
             side = 'Left' if bbox_mid_x < mid_x else 'Right'
             
-            # Existing code to draw bounding boxes and labels
-            label = f'{side} Pothole: {int(scores[i]*100)}%'
+            # Construct label text with side information
+            label = f'{side} Pothole: {int(scores[i]*100)}%'  # Updated label to include "Left" or "Right"
+
+            # Always draw bounding box for detected potholes
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
             labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)
             label_ymin = max(ymin, labelSize[1] + 10)
             cv2.rectangle(frame, (xmin, label_ymin - labelSize[1] - 10), (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255), cv2.FILLED)
             cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
 
-            # Update the closest pothole
+            # Determine if this pothole is the closest
             if area > max_area:
                 max_area = area
-                closest_pothole = (side, ymin, xmin, ymax, xmax)
+                closest_pothole = (side, ymin, xmin, ymax, xmax)  # Update closest pothole info
 
-    # Trigger the alert with threading
+    # Check if the closest pothole needs an alert and if cooldown is over
     if closest_pothole and (time.time() - last_alert_time >= alert_cooldown):
         side, ymin, xmin, ymax, xmax = closest_pothole
-        alert_thread = threading.Thread(target=alert_side, args=(side,))
-        alert_thread.start()
+        # Trigger the alert
 
-    # Existing code to display FPS and show the frame
+        alert_process = multiprocessing.Process(target=play_alert, args=(side,))
+        taillight_process = multiprocessing.Process(target=taillight.send_message, args=("right"))
+        alert_process.start()
+        taillight_process.start()
+        last_alert_time = time.time()  # Update last alert time
     cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
     cv2.imshow('Object detector', frame)
-
+    
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1
@@ -219,6 +218,7 @@ while(video.isOpened()):
     if cv2.waitKey(1) == ord('q'):
         break
 
-# Cleanup after breaking out of the loop
+# Cleanup
 video.release()
 cv2.destroyAllWindows()
+
