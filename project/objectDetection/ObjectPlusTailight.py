@@ -216,7 +216,7 @@ while(video.isOpened()):
             alert_right_process.start()
             taillight_right_process.start()
         elif side == "left":
-             print("left side is called")
+            print("left side is called")
             alert_left_process.start()
             taillight_left_process.start()
       
