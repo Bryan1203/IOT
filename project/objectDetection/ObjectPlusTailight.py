@@ -152,10 +152,7 @@ video = cv2.VideoCapture(VIDEO_PATH)
 imW = video.get(cv2.CAP_PROP_FRAME_WIDTH)
 imH = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
-alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
-alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
-taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("Right",))
-taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("Left",))
+
 
 while(video.isOpened()):
     t1 = cv2.getTickCount()
@@ -210,6 +207,12 @@ while(video.isOpened()):
     # Check if the closest pothole needs an alert and if cooldown is over
     if closest_pothole and (time.time() - last_alert_time >= alert_cooldown):
         side, ymin, xmin, ymax, xmax = closest_pothole
+        
+        alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
+        alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
+        taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("Right",))
+        taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("Left",))
+        
         # Trigger the alert
         if side == "Right":
             print("right side is called")
