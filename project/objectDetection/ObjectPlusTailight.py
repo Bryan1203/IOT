@@ -60,6 +60,7 @@ frame_rate_calc = 1
 freq = cv2.getTickFrequency()
 
 def play_alert(side):
+    print("Play alert called")
     global last_alert_time
     current_time = time.time()
     if current_time - last_alert_time >= alert_cooldown:
@@ -70,6 +71,7 @@ def play_alert(side):
         playsound(temp_file)  # Play the saved speech
         os.remove(temp_file)  # Remove the temporary file after playing
         last_alert_time = current_time  # Update the last alert time
+
 
 
 # delay_time = 2 
