@@ -152,10 +152,10 @@ video = cv2.VideoCapture(VIDEO_PATH)
 imW = video.get(cv2.CAP_PROP_FRAME_WIDTH)
 imH = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
-alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
-alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
-taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("Right",))
-taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("Left",))
+# alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
+# alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
+# taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("Right",))
+# taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("Left",))
 
 
 while(video.isOpened()):
@@ -216,12 +216,12 @@ while(video.isOpened()):
         
 
         # Trigger the alert
-        if side == "Right" and not taillight_right_process.is_alive():
+        if side == "Right":
             alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
             print("right side is called")
             alert_right_process.start()
             #taillight_right_process.start()
-        elif side == "Left" and not taillight_left_process.is_alive():
+        elif side == "Left":
             alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
             print("left side is called")
             alert_left_process.start()
