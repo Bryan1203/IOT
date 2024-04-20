@@ -15,6 +15,8 @@
 #define BRIGHTNESS 50  
 #define BLINKER_SPEED 75
 
+#define BLINDER_COUNT 3
+
 BLECharacteristic *pCharacteristic = nullptr; // Global declaration
 
 //Event Callbacks to never stop advertising 
@@ -973,6 +975,9 @@ void runRightDownBlinder()
   delete[] RightDownArrow;
 }
 
+bool hasPlayedLeft = false;
+bool hasPlayedRight = false;
+
 void loop() {
   // put your main code here, to run repeatedly:
   // delay(2000);
@@ -1022,11 +1027,24 @@ void loop() {
     }
 
     else if (valueStr == "rightdown" || valueStr == "rd") {
-      runRightDownBlinder();
+      
+      if(!hasPlayedRight)
+        for(int i = 0; i < BLINDER_COUNT; i++)
+        {
+          runRightDownBlinder();
+          hasPlayedRight = true;
+        }
+      
     }
 
     else if (valueStr == "leftdown" || valueStr == "ld") {
-      runLeftDownBlinder();
+      if(!hasPlayedRight)
+        for(int i = 0; i < BLINDER_COUNT; i++)
+        {
+          runLeftDownBlinder();
+          hasPlayedLeft = true;
+        }
+        
     }
 
     else if (valueStr == "triangle"){
