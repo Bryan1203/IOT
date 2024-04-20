@@ -176,7 +176,13 @@ while(video.isOpened()):
     max_area = 0  # Initialize the maximum area found
 
     # Iterate through all detections to find the one with the largest bounding box area
-    alert_process = multiprocessing.Process(target=play_alert, args=(side,))
+
+    alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
+    alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
+    taillight_right_process = multiprocessing.Process(target=play_alert, args=("right",))
+    taillight_left_process = multiprocessing.Process(target=play_alert, args=("left",))
+
+
     taillight_process = multiprocessing.Process(target=taillight.send_message, args=("right", ))
     for i in range(len(scores)):
         if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
@@ -204,11 +210,14 @@ while(video.isOpened()):
     if closest_pothole and (time.time() - last_alert_time >= alert_cooldown):
         side, ymin, xmin, ymax, xmax = closest_pothole
         # Trigger the alert
-
+        if side == "right":
+            alert_right_process.start()
+            taillight_right_process.start()
+        elif side == "left":
+            alert_left_process.start()
+            taillight_left_process.start()
+      
         
-
-        alert_process.start()
-        taillight_process.start()
         last_alert_time = time.time()  # Update last alert time
     cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
     cv2.imshow('Object detector', frame)
