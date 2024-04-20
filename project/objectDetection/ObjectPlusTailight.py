@@ -179,11 +179,9 @@ while(video.isOpened()):
 
     alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
     alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
-    taillight_right_process = multiprocessing.Process(target=play_alert, args=("right",))
-    taillight_left_process = multiprocessing.Process(target=play_alert, args=("left",))
+    taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("right",))
+    taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("left",))
 
-
-    taillight_process = multiprocessing.Process(target=taillight.send_message, args=("right", ))
     for i in range(len(scores)):
         if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
             ymin, xmin, ymax, xmax = [int(max(1, boxes[i][j] * imH)) if j % 2 == 0 else int(max(1, boxes[i][j] * imW)) for j in range(4)]
