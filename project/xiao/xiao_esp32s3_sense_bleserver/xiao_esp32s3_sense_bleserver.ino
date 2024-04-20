@@ -682,7 +682,7 @@ const long KnightRider_Frame14[] PROGMEM =
 const long a = 0x4b0000;
 const long _ = 0x000000;
 
-const long RightDownArrow[] PROGMEM =
+const long fRightDownArrow[] PROGMEM =
 {
 a, a, _, _, _, _, a, a, //0
 a, a, _, _, _, a, a, a, //1
@@ -694,7 +694,7 @@ a, a, a, a, a, a, a, a, //6
 a, a, a, a, a, a, a, a, //7
 };
 
-const long LeftDownArrow[] PROGMEM =
+const long fLeftDownArrow[] PROGMEM =
 {
 a, a, a, a, a, a, a, a, //0
 a, a, a, a, a, a, a, a, //1
@@ -708,16 +708,103 @@ a, a, _, _, _, _, a, a, //7
 
 const long o = 0x4b0000;
 
-const long Triangle[] PROGMEM =
+const long fTriangle[] PROGMEM =
 {
-o, o, o, o, o, _, _, _, //0
+o, o, o, o, _, _, _, _, //0
 o, o, o, o, o, o, _, _, //1
-o, o, _, _, _, o, o, _, //2
+o, o, _, _, o, o, o, _, //2
 o, o, _, _, _, _, o, o, //3
 o, o, _, _, _, _, o, o, //4
-o, o, _, _, _, o, o, _, //5
+o, o, _, _, o, o, o, _, //5
 o, o, o, o, o, o, _, _, //6
-o, o, o, o, o, _, _, _, //7
+o, o, o, o, _, _, _, _, //7
+};
+
+const long fTriangle1[] PROGMEM =
+{
+_, o, o, _, _, _, _, _, //0
+_, o, _, o, _, _, _, _, //1
+_, o, _, _, o, _, _, _, //2
+_, o, _, _, _, o, _, _, //3
+_, o, _, _, _, o, _, _, //4
+_, o, _, _, o, _, _, _, //5
+_, o, _, o, _, _, _, _, //6
+_, o, o, _, _, _, _, _, //7
+};
+
+const long fTriangle2[] PROGMEM =
+{
+_, o, o, _, _, _, _, _, //0
+_, o, _, o, o, _, _, _, //1
+_, o, _, _, _, o, o, _, //2
+_, o, _, _, _, _, _, o, //3
+_, o, _, _, _, _, _, o, //4
+_, o, _, _, _, o, o, _, //5
+_, o, _, o, o, _, _, _, //6
+_, o, o, _, _, _, _, _, //7
+};
+
+const long fTriangle3[] PROGMEM =
+{
+o, o, _, _, _, _, _, _, //0
+o, _, o, o, _, _, _, _, //1
+o, _, _, _, o, o, _, _, //2
+o, _, _, _, _, _, o, o, //3
+o, _, _, _, _, _, o, o, //4
+o, _, _, _, o, o, _, _, //5
+o, _, o, o, _, _, _, _, //6
+o, o, _, _, _, _, _, _, //7
+};
+
+const long fTriangle4[] PROGMEM =
+{
+o, o, _, _, _, _, _, _, //0
+o, o, o, o, _, _, _, _, //1
+o, o, o, o, o, o, _, _, //2
+o, o, o, o, o, o, o, o, //3
+o, o, o, o, o, o, o, o, //4
+o, o, o, o, o, o, _, _, //5
+o, o, o, o, _, _, _, _, //6
+o, o, _, _, _, _, _, _, //7
+};
+
+const long r = 0xff4000;
+
+const long fDiamond[] PROGMEM =
+{
+_, _, _, r, r, _, _, _, //0
+_, _, r, _, _, r, _, _, //1
+_, r, _, _, _, _, r, _, //2
+r, _, _, _, _, _, _, r, //3
+r, _, _, _, _, _, _, r, //4
+_, r, _, _, _, _, r, _, //5
+_, _, r, _, _, r, _, _, //6
+_, _, _, r, r, _, _, _, //7
+};
+
+const long fDiamond1[] PROGMEM =
+{
+_, _, _, r, r, _, _, _, //0
+_, _, r, r, r, r, _, _, //1
+_, r, r, _, _, r, r, _, //2
+r, r, _, _, _, _, r, r, //3
+r, r, _, _, _, _, r, r, //4
+_, r, r, _, _, r, r, _, //5
+_, _, r, r, r, r, _, _, //6
+_, _, _, r, r, _, _, _, //7
+};
+long* Diamond1 = flipEvenRows(fDiamond1);
+
+const long fDiamond2[] PROGMEM =
+{
+_, _, _, r, r, _, _, _, //0
+_, _, r, r, r, r, _, _, //1
+_, r, r, r, r, r, r, _, //2
+r, r, r, r, r, r, r, r, //3
+r, r, r, r, r, r, r, r, //4
+_, r, r, r, r, r, r, _, //5
+_, _, r, r, r, r, _, _, //6
+_, _, _, r, r, _, _, _, //7
 };
 
 long* flipEvenRows(const long frame[]) {
@@ -834,6 +921,58 @@ void runKnightRider()
   displayFrame(Blank);
 }
 
+void runLeftDownBlinder()
+{
+  long* Diamond = flipEvenRows(fDiamond);
+  long* Diamond1 = flipEvenRows(fDiamond1);
+  long* Diamond2 = flipEvenRows(fDiamond2);
+  long* LeftDownArrow = flipEvenRows(fLeftDownArrow);
+
+  displayFrame(Diamond);
+  displayFrame(Diamond1);
+  displayFrame(Diamond2);
+  displayFrame(Diamond2);
+  displayFrame(Diamond1);
+  displayFrame(Diamond);
+
+  displayFrame(LeftDownArrow);
+  displayFrame(LeftDownArrow);
+  displayFrame(LeftDownArrow);
+  displayFrame(LeftDownArrow);
+  displayFrame(LeftDownArrow);
+
+  delete[] Diamond;
+  delete[] Diamond1;
+  delete[] Diamond2;
+  delete[] LeftDownArrow;
+}
+
+void runRightDownBlinder()
+{
+  long* Diamond = flipEvenRows(fDiamond);
+  long* Diamond1 = flipEvenRows(fDiamond1);
+  long* Diamond2 = flipEvenRows(fDiamond2);
+  long* RightDownArrow = flipEvenRows(fRightDownArrow);
+
+  displayFrame(Diamond);
+  displayFrame(Diamond1);
+  displayFrame(Diamond2);
+  displayFrame(Diamond2);
+  displayFrame(Diamond1);
+  displayFrame(Diamond);
+
+  displayFrame(RightDownArrow);
+  displayFrame(RightDownArrow);
+  displayFrame(RightDownArrow);
+  displayFrame(RightDownArrow);
+  displayFrame(RightDownArrow);
+
+  delete[] Diamond;
+  delete[] Diamond1;
+  delete[] Diamond2;
+  delete[] RightDownArrow;
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
   // delay(2000);
@@ -883,44 +1022,68 @@ void loop() {
     }
 
     else if (valueStr == "rightdown" || valueStr == "rd") {
-      long* newFrame = flipEvenRows(Triangle);
-      displayFrame(newFrame); 
-      displayFrame(Blank);
-      displayFrame(newFrame); 
-      delete[] newFrame;
-      long* newFrame = flipEvenRows(RightDownArrow);
-      displayFrame(newFrame); 
-      displayFrame(Blank);
-      displayFrame(newFrame); 
-      delete[] newFrame;
+      runRightDownBlinder();
     }
 
     else if (valueStr == "leftdown" || valueStr == "ld") {
-      long* newFrame = flipEvenRows(Triangle);
-      displayFrame(newFrame); 
-      displayFrame(Blank);
-      displayFrame(newFrame); 
-      delete[] newFrame;
-      long* newFrame = flipEvenRows(LeftDownArrow);
-      displayFrame(newFrame); 
-      displayFrame(Blank);
-      displayFrame(newFrame); 
-      delete[] newFrame;
+      runLeftDownBlinder();
     }
 
     else if (valueStr == "triangle"){
-      long* newFrame = flipEvenRows(Triangle);
-      displayFrame(newFrame); 
-      displayFrame(Blank);
-      displayFrame(newFrame); 
-      delete[] newFrame;
+      long* Triangle = flipEvenRows(fTriangle);
+      displayFrame(Triangle);
+      delete[] Triangle;
+    }
+
+    else if (valueStr == "triangle1"){
+      long* Triangle1 = flipEvenRows(fTriangle1);
+      displayFrame(Triangle1);
+      delete[] Triangle1;
+    }
+
+    else if (valueStr == "triangle2"){
+      long* Triangle2 = flipEvenRows(fTriangle2);
+      displayFrame(Triangle2);
+      delete[] Triangle2;
+    }
+
+    else if (valueStr == "triangle3"){
+      long* Triangle3 = flipEvenRows(fTriangle3);
+      displayFrame(Triangle3);
+      delete[] Triangle3;
+    }
+
+    else if (valueStr == "triangle4"){
+      long* Triangle4 = flipEvenRows(fTriangle4);
+      displayFrame(Triangle4);
+      delete[] Triangle4;
+    }
+
+    else if (valueStr == "diamond"){
+      long* Diamond = flipEvenRows(fDiamond);
+      displayFrame(Diamond); 
+      delete[] Diamond;
+    }
+    else if (valueStr == "diamond1"){
+      long* Diamond1 = flipEvenRows(fDiamond1);
+      displayFrame(Diamond1); 
+      delete[] Diamond1;
+    }
+    else if (valueStr == "diamond2"){
+      long* Diamond2 = flipEvenRows(fDiamond2);
+      displayFrame(Diamond2);
+      delete[] Diamond2;
     }
 
     else{
       displayFrame(Blank);
     }
-
-
-    
   }
 }
+
+
+
+
+
+
+
