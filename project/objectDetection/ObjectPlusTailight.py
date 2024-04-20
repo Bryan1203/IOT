@@ -207,7 +207,6 @@ while(video.isOpened()):
         side, ymin, xmin, ymax, xmax = closest_pothole
         alert_thread = threading.Thread(target=alert_side, args=(side,))
         alert_thread.start()
-        last_alert_time = time.time()
 
     # Existing code to display FPS and show the frame
     cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
