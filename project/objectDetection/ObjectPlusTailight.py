@@ -25,13 +25,10 @@ from gtts import gTTS
 from playsound import playsound
 import os
 import taillight
-import multiprocessing
 
 
 last_alert_time = 0  # Initialize the last alert time variable
 alert_cooldown = 3  # Cooldown in seconds (adjust as needed)
-
-
 
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
@@ -60,7 +57,6 @@ frame_rate_calc = 1
 freq = cv2.getTickFrequency()
 
 def play_alert(side):
-    print("Play alert called")
     global last_alert_time
     current_time = time.time()
     if current_time - last_alert_time >= alert_cooldown:
@@ -71,7 +67,6 @@ def play_alert(side):
         playsound(temp_file)  # Play the saved speech
         os.remove(temp_file)  # Remove the temporary file after playing
         last_alert_time = current_time  # Update the last alert time
-
 
 
 # delay_time = 2 
@@ -152,12 +147,6 @@ video = cv2.VideoCapture(VIDEO_PATH)
 imW = video.get(cv2.CAP_PROP_FRAME_WIDTH)
 imH = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
-# alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
-# alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
-# taillight_right_process = multiprocessing.Process(target=taillight.send_message, args=("Right",))
-# taillight_left_process = multiprocessing.Process(target=taillight.send_message, args=("Left",))
-
-
 while(video.isOpened()):
     t1 = cv2.getTickCount()
     ret, frame = video.read()
@@ -184,8 +173,6 @@ while(video.isOpened()):
     max_area = 0  # Initialize the maximum area found
 
     # Iterate through all detections to find the one with the largest bounding box area
-
-
     for i in range(len(scores)):
         if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
             ymin, xmin, ymax, xmax = [int(max(1, boxes[i][j] * imH)) if j % 2 == 0 else int(max(1, boxes[i][j] * imW)) for j in range(4)]
@@ -211,23 +198,11 @@ while(video.isOpened()):
     # Check if the closest pothole needs an alert and if cooldown is over
     if closest_pothole and (time.time() - last_alert_time >= alert_cooldown):
         side, ymin, xmin, ymax, xmax = closest_pothole
-        
-        
-        
-
         # Trigger the alert
-        if side == "Right":
-            alert_right_process = multiprocessing.Process(target=play_alert, args=("right",))
-            print("right side is called")
-            alert_right_process.start()
-            #taillight_right_process.start()
-        elif side == "Left":
-            alert_left_process = multiprocessing.Process(target=play_alert, args=("left",))
-            print("left side is called")
-            alert_left_process.start()
-            #taillight_left_process.start()
-      
-        
+        alert_thread = threading.Thread(target=play_alert, args=(side,))
+        taillight_thread = threading.Thread(target=taillight.send_message, args=("right"))
+        alert_thread.start()
+        taillight_thread.start()
         last_alert_time = time.time()  # Update last alert time
     cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
     cv2.imshow('Object detector', frame)
