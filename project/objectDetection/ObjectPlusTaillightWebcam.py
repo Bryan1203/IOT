@@ -231,15 +231,14 @@ def main():
 
     while True:
         t1 = cv2.getTickCount()
-        ret, frame = video.read()
-        if not ret:
-            print('Reached the end of the video!')
-            break
+        frame1 = videostream.read()
+       
         
+        frame = frame1.copy()
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame_resized = cv2.resize(frame_rgb, (width, height))
         input_data = np.expand_dims(frame_resized, axis=0)
-
+        
         if floating_model:
             input_data = (np.float32(input_data) - input_mean) / input_std
 
