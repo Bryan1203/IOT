@@ -28,6 +28,47 @@ import multiprocessing
 import playSound
 import queue
 import pygame
+from threading import Thread
+
+class VideoStream:
+    """Camera object that controls video streaming from the Picamera"""
+    def __init__(self,resolution=(640,480),framerate=30):
+        # Initialize the PiCamera and the camera image stream
+        self.stream = cv2.VideoCapture(0)
+        ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+        ret = self.stream.set(3,resolution[0])
+        ret = self.stream.set(4,resolution[1])
+            
+        # Read first frame from the stream
+        (self.grabbed, self.frame) = self.stream.read()
+
+	# Variable to control when the camera is stopped
+        self.stopped = False
+
+    def start(self):
+	# Start the thread that reads frames from the video stream
+        Thread(target=self.update,args=()).start()
+        return self
+
+    def update(self):
+        # Keep looping indefinitely until the thread is stopped
+        while True:
+            # If the camera is stopped, stop the thread
+            if self.stopped:
+                # Close camera resources
+                self.stream.release()
+                return
+
+            # Otherwise, grab the next frame from the stream
+            (self.grabbed, self.frame) = self.stream.read()
+
+    def read(self):
+	# Return the most recent frame
+        return self.frame
+
+    def stop(self):
+	# Indicate that the camera and thread should be stopped
+        self.stopped = True
 
 def play_alert(side):
     print(f"Play alert called for {side}")
@@ -82,18 +123,16 @@ def main():
                         default='labelmap.txt')
     parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
                         default=0.5)
-    parser.add_argument('--video', help='Name of the video file',
-                        default='test.mp4')
+    parser.add_argument('--resolution', help='Desired webcam resolution in WxH. If the webcam does not support the resolution entered, errors may occur.',
+                        default='640x720')
     parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                         action='store_true')
-
     args = parser.parse_args()
 
     MODEL_NAME = args.modeldir
     GRAPH_NAME = args.graph
     LABELMAP_NAME = args.labels
-    VIDEO_NAME = args.video
-    imW, imH = int(resW), int(resH)
+   #VIDEO_NAME = args.video
     min_conf_threshold = float(args.threshold)
     use_TPU = args.edgetpu
     frame_rate_calc = 1
@@ -126,7 +165,7 @@ def main():
     CWD_PATH = os.getcwd()
 
     # Path to video file
-    VIDEO_PATH = os.path.join(CWD_PATH,VIDEO_NAME)
+    VIDEO_PATH = os.path.join(CWD_PATH,MODEL_NAME)
 
     # Path to .tflite file, which contains the model that is used for object detection
     PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,GRAPH_NAME)
@@ -160,12 +199,16 @@ def main():
     output_details = interpreter.get_output_details()
     height = input_details[0]['shape'][1]
     width = input_details[0]['shape'][2]
-
+    resW, resH = args.resolution.split('x')
+    imW, imH = int(resW), int(resH)
+   
     floating_model = (input_details[0]['dtype'] == np.float32)
 
     input_mean = 127.5
     input_std = 127.5
 
+    videostream = VideoStream(resolution=(imW,imH),framerate=30).start()
+    time.sleep(1) 
 
     # Check output layer name to determine if this model was created with TF2 or TF1,
     # because outputs are ordered differently for TF2 and TF1 models
@@ -177,15 +220,16 @@ def main():
         boxes_idx, classes_idx, scores_idx = 0, 1, 2
 
     # Open video file
-    video = cv2.VideoCapture(VIDEO_PATH)
-    imW = video.get(cv2.CAP_PROP_FRAME_WIDTH)
-    imH = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    video = cv2.VideoCapture(0)
+    if not video.isOpened():
+        print("Error: Could not open webcam.")
+        exit()
 
 
-    args = parser.parse_args()
-    video = cv2.VideoCapture(args.video)
+    # args = parser.parse_args()
+    # video = cv2.VideoCapture(args.video)
 
-    while(video.isOpened()):
+    while True:
         t1 = cv2.getTickCount()
         ret, frame = video.read()
         if not ret:
