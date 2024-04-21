@@ -23,7 +23,7 @@ import sys
 import importlib.util
 from gtts import gTTS
 from playsound import playsound
-# import taillight
+import taillight
 import multiprocessing
 import playSound
 import queue
@@ -238,7 +238,7 @@ def main():
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame_resized = cv2.resize(frame_rgb, (width, height))
         input_data = np.expand_dims(frame_resized, axis=0)
-        
+
         if floating_model:
             input_data = (np.float32(input_data) - input_mean) / input_std
 
@@ -287,9 +287,11 @@ def main():
             if side == "Right":
                 print("Detection on right detected")
                 alert_queue.put("right")
+                taillight.send_message("rd")
             elif side == "Left":
                 print("Detection on left detected")
                 alert_queue.put("left")
+                taillight.send_message("ld")
 
             
 
