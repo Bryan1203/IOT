@@ -975,9 +975,6 @@ void runRightDownBlinder()
   delete[] RightDownArrow;
 }
 
-bool hasPlayedLeft = false;
-bool hasPlayedRight = false;
-
 void loop() {
   // put your main code here, to run repeatedly:
   // delay(2000);
@@ -1031,32 +1028,19 @@ void loop() {
     }
 
     else if (valueStr == "rightdown" || valueStr == "rd") {
-      
-      if(!hasPlayedRight){
-        for(int i = 0; i < BLINDER_COUNT; i++)
-        {
-          runRightDownBlinder();
-          hasPlayedRight = true;
-        }
+      for(int i = 0; i < BLINDER_COUNT; i++)
+      {
+        runRightDownBlinder();
       }
-      else{
-        displayFrame(Blank);
-      }
+      pCharacteristic->setValue("Blank");
     }
 
     else if (valueStr == "leftdown" || valueStr == "ld") {
-      if(!hasPlayedLeft){
-        Serial.println("inside if");
-        for(int i = 0; i < BLINDER_COUNT; i++)
-        {
-          Serial.println("inside loop");
-          runLeftDownBlinder();
-          hasPlayedLeft = true;
-        }
+      for(int i = 0; i < BLINDER_COUNT; i++)
+      {
+        runLeftDownBlinder();
       }
-      else{
-        displayFrame(Blank);
-      }        
+      pCharacteristic->setValue("Blank"); 
     }
 
     else if (valueStr == "triangle"){
