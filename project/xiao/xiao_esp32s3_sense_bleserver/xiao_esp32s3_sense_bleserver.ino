@@ -17,6 +17,8 @@
 
 #define BLINDER_COUNT 3
 
+#define ARROW_DELAY 1000
+
 BLECharacteristic *pCharacteristic = nullptr; // Global declaration
 
 //Event Callbacks to never stop advertising 
@@ -795,9 +797,20 @@ _, r, r, _, _, r, r, _, //5
 _, _, r, r, r, r, _, _, //6
 _, _, _, r, r, _, _, _, //7
 };
-long* Diamond1 = flipEvenRows(fDiamond1);
 
 const long fDiamond2[] PROGMEM =
+{
+_, _, _, r, r, _, _, _, //0
+_, _, r, r, r, r, _, _, //1
+_, r, r, r, r, r, r, _, //2
+r, r, r, _, _, r, r, r, //3
+r, r, r, _, _, r, r, r, //4
+_, r, r, r, r, r, r, _, //5
+_, _, r, r, r, r, _, _, //6
+_, _, _, r, r, _, _, _, //7
+};
+
+const long fDiamond3[] PROGMEM =
 {
 _, _, _, r, r, _, _, _, //0
 _, _, r, r, r, r, _, _, //1
@@ -808,6 +821,7 @@ _, r, r, r, r, r, r, _, //5
 _, _, r, r, r, r, _, _, //6
 _, _, _, r, r, _, _, _, //7
 };
+
 
 long* flipEvenRows(const long frame[]) {
   int rows = sqrt(NUM_LEDS);
@@ -928,24 +942,25 @@ void runLeftDownBlinder()
   long* Diamond = flipEvenRows(fDiamond);
   long* Diamond1 = flipEvenRows(fDiamond1);
   long* Diamond2 = flipEvenRows(fDiamond2);
+  long* Diamond3 = flipEvenRows(fDiamond3);
   long* LeftDownArrow = flipEvenRows(fLeftDownArrow);
 
   displayFrame(Diamond);
   displayFrame(Diamond1);
   displayFrame(Diamond2);
+  displayFrame(Diamond3);
+  displayFrame(Diamond3);
   displayFrame(Diamond2);
   displayFrame(Diamond1);
   displayFrame(Diamond);
 
   displayFrame(LeftDownArrow);
-  displayFrame(LeftDownArrow);
-  displayFrame(LeftDownArrow);
-  displayFrame(LeftDownArrow);
-  displayFrame(LeftDownArrow);
+  delay(ARROW_DELAY);
 
   delete[] Diamond;
   delete[] Diamond1;
   delete[] Diamond2;
+  delete[] Diamond3;
   delete[] LeftDownArrow;
 }
 
@@ -954,30 +969,30 @@ void runRightDownBlinder()
   long* Diamond = flipEvenRows(fDiamond);
   long* Diamond1 = flipEvenRows(fDiamond1);
   long* Diamond2 = flipEvenRows(fDiamond2);
+  long* Diamond3 = flipEvenRows(fDiamond3);
   long* RightDownArrow = flipEvenRows(fRightDownArrow);
 
   displayFrame(Diamond);
   displayFrame(Diamond1);
   displayFrame(Diamond2);
+  displayFrame(Diamond3);
+  displayFrame(Diamond3);
   displayFrame(Diamond2);
   displayFrame(Diamond1);
   displayFrame(Diamond);
-
   displayFrame(RightDownArrow);
-  displayFrame(RightDownArrow);
-  displayFrame(RightDownArrow);
-  displayFrame(RightDownArrow);
-  displayFrame(RightDownArrow);
+  delay(ARROW_DELAY);
 
   delete[] Diamond;
   delete[] Diamond1;
   delete[] Diamond2;
+  delete[] Diamond3;
   delete[] RightDownArrow;
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // delay(2000);
+  // delay(1000);
 
   if (pCharacteristic != nullptr) { // Check if pCharacteristic is initialized
     std::string value = pCharacteristic->getValue();
@@ -1078,11 +1093,13 @@ void loop() {
       displayFrame(Diamond); 
       delete[] Diamond;
     }
+
     else if (valueStr == "diamond1"){
       long* Diamond1 = flipEvenRows(fDiamond1);
       displayFrame(Diamond1); 
       delete[] Diamond1;
     }
+
     else if (valueStr == "diamond2"){
       long* Diamond2 = flipEvenRows(fDiamond2);
       displayFrame(Diamond2);
