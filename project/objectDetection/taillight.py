@@ -63,7 +63,8 @@ signal.signal(signal.SIGINT, signal_handler)
 
 
 def main():
-    terminal_input()
+    print("taillight func")
+    #terminal_input()
 
 
 if __name__ == "__main__":
