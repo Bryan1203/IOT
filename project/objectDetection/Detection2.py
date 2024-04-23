@@ -195,6 +195,8 @@ def main():
     output_details = interpreter.get_output_details()
     height = input_details[0]['shape'][1]
     width = input_details[0]['shape'][2]
+    print("height is", height)
+    print("width is", width)
 
     floating_model = (input_details[0]['dtype'] == np.float32)
 
@@ -222,13 +224,26 @@ def main():
     while True:
 
         # Start timer (for calculating frame rate)
+        
         t1 = cv2.getTickCount()
-
-        # Grab frame from video stream
         frame1 = videostream.read()
 
+        mask = np.zeros((720, 1280), dtype=np.uint8)  # Full size of the frame
+
+        # Calculate the starting and ending points to center the mask
+        start_x = (1280 // 2) - (640 // 2)
+        end_x = start_x + 640
+
+        # Set the center of the mask to visible (255)
+        mask[:, start_x:end_x] = 255
+        #mask[:, :640] = 255  # Only the left half is visible
+
+        
+        masked_frame = cv2.bitwise_and(frame1, frame1, mask=mask)
+
+
         # Acquire frame and resize to expected shape [1xHxWx3]
-        frame = frame1.copy()
+        frame = masked_frame.copy()
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame_resized = cv2.resize(frame_rgb, (width, height))
         input_data = np.expand_dims(frame_resized, axis=0)
@@ -263,34 +278,41 @@ def main():
                 ymax = int(min(imH,(boxes[i][2] * imH)))
                 xmax = int(min(imW,(boxes[i][3] * imW)))
 
-                # Determine the midpoint of the bounding box
-                bbox_mid_x = (xmin + xmax) // 2
-                
-                # Determine if the midpoint of the bounding box is on the left or right side of the midpoint of the image
-                if bbox_mid_x < mid_x:
-                    side = 'Left'
-                else:
-                    side = 'Right'
 
-                # Draw rectangle around detected object
-                cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
+                box_width = xmax - xmin
+                box_height = ymax - ymin
+                max_size = 100
+                if box_width < max_size or box_height < max_size:
+                     # Determine the midpoint of the bounding box
+                    bbox_mid_x = (xmin + xmax) // 2
+                    
+                    # Determine if the midpoint of the bounding box is on the left or right side of the midpoint of the image
+                    if bbox_mid_x < mid_x:
+                        side = 'Left'
+                    else:
+                        side = 'Right'
 
-                # Construct label including the side information
-                object_name = labels[int(classes[i])]  # Retrieve object name
-                label = f'{object_name} ({side}): {int(scores[i]*100)}%'  # e.g., 'pothole (Left): 72%'
+                    # Draw rectangle around detected object
+                    cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
 
-                # Label formatting and drawing
-                labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)
-                label_ymin = max(ymin, labelSize[1] + 10)
-                cv2.rectangle(frame, (xmin, label_ymin - labelSize[1] - 10), (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255), cv2.FILLED)
-                cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+                    # Construct label including the side information
+                    object_name = labels[int(classes[i])]  # Retrieve object name
+                    label = f'{object_name} ({side}): {int(scores[i]*100)}%'  # e.g., 'pothole (Left): 72%'
 
-                area = (xmax - xmin) * (ymax - ymin)  # Calculate area of the bounding box
+                    # Label formatting and drawing
+                    labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)
+                    label_ymin = max(ymin, labelSize[1] + 10)
+                    cv2.rectangle(frame, (xmin, label_ymin - labelSize[1] - 10), (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255), cv2.FILLED)
+                    cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+
+                    area = (xmax - xmin) * (ymax - ymin)  # Calculate area of the bounding box
 
 
-                if area > max_area:
-                    max_area = area
-                    closest_pothole = (side, ymin, xmin, ymax, xmax)  # Update closest pothole info
+                    if area > max_area:
+                        max_area = area
+                        closest_pothole = (side, ymin, xmin, ymax, xmax)  # Update closest pothole info
+
+               
 
 
         if closest_pothole and (time.time() - last_alert_time >= alert_cooldown):
