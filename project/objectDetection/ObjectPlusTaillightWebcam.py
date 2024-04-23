@@ -258,7 +258,11 @@ def main():
         
         for i in range(len(scores)):
             if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
-                xmin, ymin, xmax, ymax = [int(max(1, boxes[i][j] * imW)) if j % 2 == 0 else int(max(1, boxes[i][j] * imH)) for j in range(4)]
+
+                #xmin, ymin, xmax, ymax = [int(max(1, boxes[i][j] * imW)) if j % 2 == 0 else int(max(1, boxes[i][j] * imH)) for j in range(4)]
+                ymin, xmin, ymax, xmax = boxes[i]  # Get normalized coordinates
+
+                
                 area = (xmax - xmin) * (ymax - ymin)  # Calculate area of the bounding box
                 bbox_mid_x = (xmin + xmax) // 2
                 side = 'Left' if bbox_mid_x < mid_x else 'Right'
