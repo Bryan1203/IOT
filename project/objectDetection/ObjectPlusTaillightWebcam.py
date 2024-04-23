@@ -32,7 +32,7 @@ from threading import Thread
 
 class VideoStream:
     """Camera object that controls video streaming from the Picamera"""
-    def __init__(self,resolution=(640,480),framerate=30):
+    def __init__(self,resolution=(640,720),framerate=30):
         # Initialize the PiCamera and the camera image stream
         self.stream = cv2.VideoCapture(0)
         ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
@@ -124,7 +124,7 @@ def main():
     parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
                         default=0.5)
     parser.add_argument('--resolution', help='Desired webcam resolution in WxH. If the webcam does not support the resolution entered, errors may occur.',
-                        default='1280x720')
+                        default='640x720')
     parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                         action='store_true')
     args = parser.parse_args()
@@ -259,10 +259,10 @@ def main():
         for i in range(len(scores)):
             if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
 
-                #xmin, ymin, xmax, ymax = [int(max(1, boxes[i][j] * imW)) if j % 2 == 0 else int(max(1, boxes[i][j] * imH)) for j in range(4)]
-                ymin, xmin, ymax, xmax = boxes[i]  # Get normalized coordinates
+                xmin, ymin, xmax, ymax = [int(max(1, boxes[i][j] * imW)) if j % 2 == 0 else int(max(1, boxes[i][j] * imH)) for j in range(4)]
 
-                
+
+
                 area = (xmax - xmin) * (ymax - ymin)  # Calculate area of the bounding box
                 bbox_mid_x = (xmin + xmax) // 2
                 side = 'Left' if bbox_mid_x < mid_x else 'Right'
