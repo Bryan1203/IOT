@@ -239,11 +239,11 @@ def main():
         #mask[:, :640] = 255  # Only the left half is visible
 
         
-        masked_frame = cv2.bitwise_and(frame1, frame1, mask=mask)
+        #masked_frame = cv2.bitwise_and(frame1, frame1, mask=mask)
 
 
         # Acquire frame and resize to expected shape [1xHxWx3]
-        frame = masked_frame.copy()
+        frame = frame1.copy()
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame_resized = cv2.resize(frame_rgb, (width, height))
         input_data = np.expand_dims(frame_resized, axis=0)
