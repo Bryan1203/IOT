@@ -11,6 +11,7 @@
 # This script will also includes taillight function to send infromation to the smart tail light
 # This code is based off the TensorFlow Lite image classification example at:
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
+# to run this program python3 .\potholeDetectionModelwithTailight.py --modeldir .\ssdquant_model_lite\ 
 
 # Adapted from :
 ######## Webcam Object Detection Using Tensorflow-trained Classifier #########
@@ -38,10 +39,8 @@ import time
 from threading import Thread
 import importlib.util
 from gtts import gTTS
-from playsound import playsound
 import taillight
 import multiprocessing
-import playSound
 import queue
 import pygame
 
