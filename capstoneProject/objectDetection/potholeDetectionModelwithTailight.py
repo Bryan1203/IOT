@@ -1,3 +1,18 @@
+######## Pothole Detection Model with Taillight#########
+#
+# Author: Bryan Chang, Sahith 
+# Date: 04/26/24
+# Description: 
+# This program uses a custom trained SSD v2 TensorFlow Lite model to perform pothole detection on a live webcam
+# feed. It draws boxes and scores around the objects of interest in each frame from the
+# webcam. To improve FPS, the webcam object runs in a separate thread from the main program.
+# This script will work with either a Picamera or regular USB webcam. It classisfied the pothole base on its position relative to the grame
+# The script will announce the pothole to the speaker 
+# This script will also includes taillight function to send infromation to the smart tail light
+# This code is based off the TensorFlow Lite image classification example at:
+# https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
+
+# Adapted from :
 ######## Webcam Object Detection Using Tensorflow-trained Classifier #########
 #
 # Author: Evan Juras
